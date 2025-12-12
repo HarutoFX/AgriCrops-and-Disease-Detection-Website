@@ -1,0 +1,292 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>AI Diagnosis - Crop Portal</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&family=Courier+Prime&display=swap" rel="stylesheet"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet"/>
+    
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <link rel="stylesheet" href="style.css?v=1" />
+
+    <style>
+      /* --- SCANNED IMAGE CONTAINER --- */
+      .scan-wrapper {
+        position: relative;
+        width: 100%;
+        max-width: 400px;
+        height: 300px;
+        margin: 0 auto;
+        border-radius: 12px;
+        overflow: hidden;
+        border: 2px solid var(--primary);
+        background: #000;
+        display: none; /* Hidden initially */
+      }
+
+      .scan-wrapper img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        opacity: 0.6; /* Slightly dark to make laser pop */
+      }
+
+      /* --- LASER SCANNER BEAM --- */
+      .scan-line {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 4px;
+        background: #0f0;
+        box-shadow: 0 0 15px #0f0, 0 0 30px #0f0;
+        animation: scanMove 2s linear infinite;
+        z-index: 10;
+      }
+
+      @keyframes scanMove {
+        0% { top: 0%; opacity: 0; }
+        10% { opacity: 1; }
+        90% { opacity: 1; }
+        100% { top: 100%; opacity: 0; }
+      }
+
+      /* --- TERMINAL LOGS --- */
+      .terminal-box {
+        background-color: #1e1e1e;
+        border-left: 5px solid var(--primary);
+        border-radius: 8px;
+        padding: 15px;
+        font-family: 'Courier Prime', monospace;
+        height: 300px;
+        overflow-y: auto;
+        color: #00ff00;
+        font-size: 0.9rem;
+        display: none; /* Hidden initially */
+        box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
+      }
+
+      .log-entry {
+        margin-bottom: 5px;
+        opacity: 0;
+        animation: fadeIn 0.2s forwards;
+      }
+      
+      .log-warn { color: #ffc107; }
+      .log-error { color: #dc3545; }
+      .log-success { color: #28a745; font-weight: bold; }
+
+      @keyframes fadeIn { to { opacity: 1; } }
+
+      /* --- UPLOAD AREA --- */
+      .custom-upload {
+        border: 3px dashed #dee2e6;
+        border-radius: 15px;
+        padding: 4rem 2rem;
+        transition: all 0.3s;
+        cursor: pointer;
+        background: #f8f9fa;
+      }
+      .custom-upload:hover {
+        border-color: var(--primary);
+        background: rgba(40, 167, 69, 0.05);
+      }
+      [data-theme="dark"] .custom-upload {
+        background: #2d2d2d;
+        border-color: #444;
+      }
+    </style>
+  </head>
+
+  <body class="d-flex flex-column min-vh-100">
+    
+    <nav class="navbar navbar-expand-lg bg-light shadow-sm sticky-top">
+      <div class="container">
+        <a class="navbar-brand fw-bold text-success" href="index.html">🌿 Crop Portal</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto align-items-center">
+            <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+            <li class="nav-item"><a class="nav-link active" href="analysis.html">Detection</a></li>
+            <li class="nav-item"><a class="nav-link" href="advisories.html">Advisory</a></li>
+            <li class="nav-item"><a class="nav-link" href="support.html">Support</a></li>
+            <li class="nav-item ms-2">
+              <button id="themeToggle" class="theme-toggle-btn"><i class="bi bi-brightness-high-fill"></i></button>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <section class="container py-5 my-auto">
+      <div class="row justify-content-center align-items-center">
+        
+        <div class="col-lg-6 text-center mb-4 mb-lg-0">
+          
+          <div id="uploadState" class="custom-upload" onclick="document.getElementById('aiFileInput').click()">
+            <i class="bi bi-cloud-arrow-up-fill display-1 text-success mb-3"></i>
+            <h3>Upload Leaf Image</h3>
+            <p class="text-muted">Click to browse or drag file here</p>
+            <input type="file" id="aiFileInput" hidden accept="image/*">
+          </div>
+
+          <div id="scanState" class="scan-wrapper">
+            <div class="scan-line"></div>
+            <img id="scannedImage" src="" alt="Analyzing...">
+            <div class="position-absolute bottom-0 w-100 text-center text-white p-2" style="background: rgba(0,0,0,0.7);">
+              <span class="spinner-border spinner-border-sm text-success me-2"></span> 
+              AI Analysis in Progress...
+            </div>
+          </div>
+
+        </div>
+
+        <div class="col-lg-6">
+          
+          <div id="logState" class="terminal-box">
+            <div class="log-entry">> System initialized.</div>
+            <div class="log-entry">> Waiting for input...</div>
+          </div>
+
+          <div id="resultState" class="card shadow-lg border-0 d-none">
+            <div class="card-header bg-success text-white fw-bold">
+              <i class="bi bi-check-circle-fill me-2"></i> Diagnosis Complete
+            </div>
+            <div class="card-body text-center p-4">
+              <img id="finalImage" src="" class="rounded-circle mb-3 border border-3 border-success" style="width: 120px; height: 120px; object-fit: cover;">
+              
+              <h2 class="fw-bold text-dark mb-1" id="diseaseTitle">Early Blight</h2>
+              <p class="badge bg-warning text-dark fs-6 mb-3">Confidence: 94%</p>
+
+              <div class="alert alert-light text-start border">
+                <strong><i class="bi bi-info-circle"></i> Analysis:</strong>
+                <span id="diseaseDesc">Fungal infection detected on leaf edges.</span>
+              </div>
+
+              <div class="d-grid gap-2">
+                <button class="btn btn-outline-success" data-bs-toggle="collapse" data-bs-target="#treatmentBox">
+                  Show Treatment Plan
+                </button>
+                <div class="collapse" id="treatmentBox">
+                  <div class="card card-body bg-light small text-start mt-2">
+                    <ul class="mb-0 ps-3">
+                      <li>Apply copper-based fungicides.</li>
+                      <li>Remove infected leaves immediately.</li>
+                      <li>Improve air circulation around plants.</li>
+                    </ul>
+                  </div>
+                </div>
+                <button class="btn btn-primary mt-2" onclick="location.reload()">Analyze Another</button>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <footer class="footer-section text-center mt-auto">
+      <div class="container">
+        <p class="small mb-0 py-3">© 2025 Crop Portal. All rights reserved.</p>
+      </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script src="script.js"></script>
+    
+    <script>
+      // ✅ TARGETING THE NEW ID 'aiFileInput'
+      const aiInput = document.getElementById('aiFileInput');
+      
+      const uploadState = document.getElementById('uploadState');
+      const scanState = document.getElementById('scanState');
+      const logState = document.getElementById('logState');
+      const resultState = document.getElementById('resultState');
+      
+      const scannedImage = document.getElementById('scannedImage');
+      const finalImage = document.getElementById('finalImage');
+
+      if (aiInput) {
+          aiInput.addEventListener('change', function(e) {
+            if (e.target.files && e.target.files[0]) {
+              const file = e.target.files[0];
+              const reader = new FileReader();
+              
+              reader.onload = function(evt) {
+                // 1. Set Image
+                scannedImage.src = evt.target.result;
+                finalImage.src = evt.target.result;
+                
+                // 2. Switch UI to Scanning Mode
+                uploadState.style.display = 'none';
+                scanState.style.display = 'block';
+                logState.style.display = 'block';
+
+                // 3. Start Fake Logs
+                runFakeLogs();
+              };
+              
+              reader.readAsDataURL(file);
+            }
+          });
+      }
+
+      function runFakeLogs() {
+        const logs = [
+          { text: "> Uploading image data... Done.", delay: 500 },
+          { text: "> Normalizing resolution to 256x256...", delay: 1200 },
+          { text: "> Loading Neural Network (CNN) models...", delay: 2000 },
+          { text: "> Scanning for lesions...", delay: 2800 },
+          { text: "> Analyzing texture patterns...", delay: 3500 },
+          { text: "> Comparing with dataset (50,000 samples)...", delay: 4500 },
+          { text: "> Match found: Early Blight (Confidence: 0.94)", delay: 5500, class: 'log-warn' },
+          { text: "> Generating advisory report...", delay: 6000 },
+          { text: "> ANALYSIS COMPLETE.", delay: 6500, class: 'log-success' }
+        ];
+
+        let container = document.getElementById('logState');
+
+        logs.forEach(log => {
+          setTimeout(() => {
+            const div = document.createElement('div');
+            div.className = 'log-entry ' + (log.class || '');
+            div.innerText = log.text;
+            container.appendChild(div);
+            container.scrollTop = container.scrollHeight; // Auto scroll
+
+            // If it's the last log, show result
+            if(log.text.includes("COMPLETE")) {
+              setTimeout(showResult, 1000);
+            }
+          }, log.delay);
+        });
+      }
+
+      function showResult() {
+        scanState.style.display = 'none';
+        logState.style.display = 'none';
+        
+        // Show SweetAlert first for WOW effect
+        Swal.fire({
+          icon: 'success',
+          title: 'Disease Detected',
+          text: 'Analysis complete. View details below.',
+          timer: 1500,
+          showConfirmButton: false
+        });
+
+        resultState.classList.remove('d-none');
+      }
+    </script>
+  </body>
+</html>

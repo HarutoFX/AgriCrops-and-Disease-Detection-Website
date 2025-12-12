@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Advisories - Crop Portal</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="style.css?v=1" />
+  </head>
+
+  <body class="d-flex flex-column min-vh-100">
+    
+    <nav class="navbar navbar-expand-lg bg-light shadow-sm sticky-top">
+      <div class="container">
+        <a class="navbar-brand fw-bold text-success" href="index.html">🌿 Crop Portal</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto align-items-center">
+            <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+            <li class="nav-item"><a class="nav-link" href="analysis.html">Detection</a></li>
+            <li class="nav-item"><a class="nav-link active" href="advisories.html">Advisory</a></li>
+            <li class="nav-item"><a class="nav-link" href="support.html">Support</a></li>
+            <li class="nav-item ms-2">
+              <button id="themeToggle" class="theme-toggle-btn"><i class="bi bi-brightness-high-fill"></i></button>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <section class="advisories-section py-5 text-center">
+      <div class="container">
+        <h1 class="fw-bold mb-3">Crop Advisories Database</h1>
+        <p class="lead mb-5">Search over 50+ crops for expert advice, treatment, and prevention.</p>
+
+        <div class="row justify-content-center mb-5">
+          <div class="col-md-8">
+            <div class="input-group input-group-lg">
+              <span class="input-group-text bg-white border-end-0"><i class="bi bi-search text-muted"></i></span>
+              <input type="text" class="form-control border-start-0" id="searchAdvisory" placeholder="Search database (e.g., 'Mango', 'Cotton', 'Fungal')">
+            </div>
+          </div>
+        </div>
+
+        <div class="row g-4" id="advisoryGrid">
+            </div>
+        
+        <div class="mt-5">
+            <p class="text-muted small" id="showingCount">Loading Database...</p>
+        </div>
+
+      </div>
+    </section>
+
+    <footer class="footer-section text-center mt-auto">
+      <div class="container">
+        <p class="small mb-0 py-3">© 2025 Crop Portal. All rights reserved.</p>
+      </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="script.js"></script>
+    
+    <script>
+      let cropsDB = [];
+
+      // LOAD CROPS FROM JSON
+      async function loadCropsDatabase() {
+        try {
+          const response = await fetch('crops.json');
+          if (!response.ok) throw new Error('Failed to load crops database');
+          const data = await response.json();
+          cropsDB = data.crops;
+          renderCrops(cropsDB);
+        } catch (error) {
+          console.error('Error loading crops:', error);
+          document.getElementById('advisoryGrid').innerHTML = '<div class="alert alert-danger w-100">Error loading crops database. Please refresh.</div>';
+        }
+      }
+
+      // RENDER ENGINE
+      function renderCrops(data) {
+        const container = document.getElementById('advisoryGrid');
+        const countLabel = document.getElementById('showingCount');
+        container.innerHTML = ''; // Clear existing content
+
+        data.forEach(item => {
+          let badgeColor = 'bg-secondary';
+          if(item.risk === 'High' || item.risk === 'Critical') badgeColor = 'bg-danger';
+          if(item.risk === 'Moderate' || item.risk === 'Medium') badgeColor = 'bg-warning text-dark';
+          if(item.risk === 'Low' || item.risk === 'Common' || item.risk === 'Seasonal') badgeColor = 'bg-success';
+
+          // Safety Feature: Fallback image if the main one breaks
+          const fallbackImage = "https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?w=600&q=80"; 
+
+          const html = `
+            <div class="col-md-6 col-lg-4 advisory-item">
+              <div class="feature-card advisory-card h-100 d-flex flex-column p-0 overflow-hidden text-start">
+                <div style="height: 200px; overflow: hidden; position: relative;">
+                  <img src="${item.image}" 
+                       class="w-100 h-100 object-fit-cover" 
+                       alt="${item.crop}" 
+                       loading="lazy"
+                       onerror="this.onerror=null; this.src='${fallbackImage}';">
+                  <div class="position-absolute top-0 end-0 p-2">
+                     <span class="badge bg-dark bg-opacity-75">${item.crop}</span>
+                  </div>
+                </div>
+                <div class="p-4 d-flex flex-column flex-grow-1">
+                  <h5 class="fw-bold text-success text-truncate">${item.name}</h5>
+                  <p class="small text-muted mb-3 flex-grow-1">${item.description}</p>
+                  <div class="mt-3">
+                    <span class="badge bg-light text-dark border mb-1">${item.type}</span>
+                    <span class="badge ${badgeColor} mb-1">${item.risk} Risk</span>
+                    <button class="btn btn-outline-success w-100 mt-2 btn-sm">View Treatment</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          `;
+          container.insertAdjacentHTML('beforeend', html);
+        });
+        
+        countLabel.textContent = `Showing ${data.length} crops from database`;
+      }
+
+      document.addEventListener('DOMContentLoaded', () => {
+        // Load crops from external JSON file
+        loadCropsDatabase();
+
+        const searchInput = document.getElementById('searchAdvisory');
+        searchInput.addEventListener('keyup', (e) => {
+            const term = e.target.value.toLowerCase();
+            const filtered = cropsDB.filter(item => 
+                item.name.toLowerCase().includes(term) || 
+                item.crop.toLowerCase().includes(term) ||
+                item.type.toLowerCase().includes(term)
+            );
+            renderCrops(filtered);
+        });
+      });
+    </script>
+  </body>
+</html>

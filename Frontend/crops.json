@@ -1,0 +1,274 @@
+{
+  "crops": [
+    {
+      "id": 1,
+      "name": "Potato Early Blight",
+      "crop": "Potato",
+      "type": "Fungal",
+      "risk": "High",
+      "image": "https://images.unsplash.com/photo-1590005354167-6a980d47d4e1?w=600&q=80",
+      "description": "Dark concentric rings on older leaves."
+    },
+    {
+      "id": 2,
+      "name": "Tomato Mosaic Virus",
+      "crop": "Tomato",
+      "type": "Viral",
+      "risk": "Critical",
+      "image": "https://images.unsplash.com/photo-1592841200221-a6898f307baa?w=600&q=80",
+      "description": "Mottled light and dark green pattern on leaves."
+    },
+    {
+      "id": 3,
+      "name": "Rice Blast",
+      "crop": "Rice",
+      "type": "Fungal",
+      "risk": "High",
+      "image": "https://images.unsplash.com/photo-1586201375761-83865001e31c?w=600&q=80",
+      "description": "Diamond-shaped lesions with gray centers."
+    },
+    {
+      "id": 4,
+      "name": "Wheat Rust",
+      "crop": "Wheat",
+      "type": "Fungal",
+      "risk": "Seasonal",
+      "image": "https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=600&q=80",
+      "description": "Reddish-orange pustules on stems and leaves."
+    },
+    {
+      "id": 5,
+      "name": "Corn Smut",
+      "crop": "Corn",
+      "type": "Fungal",
+      "risk": "Moderate",
+      "image": "https://images.unsplash.com/photo-1551754655-cd27e38d2076?w=600&q=80",
+      "description": "Large gray galls on ears and tassels."
+    },
+    {
+      "id": 6,
+      "name": "Apple Scab",
+      "crop": "Apple",
+      "type": "Fungal",
+      "risk": "Common",
+      "image": "https://images.unsplash.com/photo-1567306226416-28f0efdc88ce?w=600&q=80",
+      "description": "Olive-green velvety spots on leaves."
+    },
+    {
+      "id": 7,
+      "name": "Grape Powdery Mildew",
+      "crop": "Grapes",
+      "type": "Fungal",
+      "risk": "High",
+      "image": "https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?w=600&q=80",
+      "description": "White powdery coating on leaves and fruit."
+    },
+    {
+      "id": 8,
+      "name": "Banana Fusarium Wilt",
+      "crop": "Banana",
+      "type": "Fungal",
+      "risk": "Critical",
+      "image": "https://images.unsplash.com/photo-1603833665858-e61d17a86224?w=600&q=80",
+      "description": "Yellowing of older leaves and vascular discoloration."
+    },
+    {
+      "id": 9,
+      "name": "Mango Anthracnose",
+      "crop": "Mango",
+      "type": "Fungal",
+      "risk": "High",
+      "image": "https://images.unsplash.com/photo-1553279768-865429fa0078?w=600&q=80",
+      "description": "Black sunken spots on fruit and flowers."
+    },
+    {
+      "id": 10,
+      "name": "Orange Citrus Canker",
+      "crop": "Orange",
+      "type": "Bacterial",
+      "risk": "High",
+      "image": "https://images.unsplash.com/photo-1611080626919-7cf5a9dbab5b?w=600&q=80",
+      "description": "Raised corky lesions on fruit and leaves."
+    },
+    {
+      "id": 11,
+      "name": "Onion Downy Mildew",
+      "crop": "Onion",
+      "type": "Fungal",
+      "risk": "Medium",
+      "image": "https://images.unsplash.com/photo-1618512496248-a07fe83aa8cb?w=600&q=80",
+      "description": "Pale spots turning violet/purple on leaves."
+    },
+    {
+      "id": 12,
+      "name": "Carrot Leaf Blight",
+      "crop": "Carrot",
+      "type": "Bacterial",
+      "risk": "Low",
+      "image": "https://images.unsplash.com/photo-1598170845058-32b9d6a5da37?w=600&q=80",
+      "description": "Dark brown necrotic spots on foliage."
+    },
+    {
+      "id": 13,
+      "name": "Cucumber Mosaic",
+      "crop": "Cucumber",
+      "type": "Viral",
+      "risk": "High",
+      "image": "https://images.unsplash.com/photo-1449300079323-02e209d9d3a6?w=600&q=80",
+      "description": "Yellow mottling and stunted growth."
+    },
+    {
+      "id": 14,
+      "name": "Pepper Bacterial Spot",
+      "crop": "Pepper",
+      "type": "Bacterial",
+      "risk": "Medium",
+      "image": "https://images.unsplash.com/photo-1563565375-f3fdf5a6c469?w=600&q=80",
+      "description": "Small water-soaked spots on leaves."
+    },
+    {
+      "id": 15,
+      "name": "Spinach Leaf Spot",
+      "crop": "Spinach",
+      "type": "Fungal",
+      "risk": "Low",
+      "image": "https://images.unsplash.com/photo-1576045057995-568f588f82fb?w=600&q=80",
+      "description": "Small circular spots with pale centers."
+    },
+    {
+      "id": 16,
+      "name": "Cotton Root Rot",
+      "crop": "Cotton",
+      "type": "Fungal",
+      "risk": "High",
+      "image": "https://images.unsplash.com/photo-1585114061030-78e8e9012546?w=600&q=80",
+      "description": "Sudden wilting and death of plants."
+    },
+    {
+      "id": 17,
+      "name": "Sugarcane Red Rot",
+      "crop": "Sugarcane",
+      "type": "Fungal",
+      "risk": "Critical",
+      "image": "https://images.unsplash.com/photo-1574943320219-553eb213f72d?w=600&q=80",
+      "description": "Reddish patches inside the cane stalk."
+    },
+    {
+      "id": 18,
+      "name": "Coffee Rust",
+      "crop": "Coffee",
+      "type": "Fungal",
+      "risk": "High",
+      "image": "https://images.unsplash.com/photo-1599599810694-b5ac4dd40c2e?w=600&q=80",
+      "description": "Yellow-orange powdery spots on leaves."
+    },
+    {
+      "id": 19,
+      "name": "Tea Blister Blight",
+      "crop": "Tea",
+      "type": "Fungal",
+      "risk": "Moderate",
+      "image": "https://images.unsplash.com/photo-1544816155-12df9643f363?w=600&q=80",
+      "description": "Blister-like swellings on young leaves."
+    },
+    {
+      "id": 20,
+      "name": "Soybean Rust",
+      "crop": "Soybean",
+      "type": "Fungal",
+      "risk": "High",
+      "image": "https://images.unsplash.com/photo-1622566336127-4e0182882604?w=600&q=80",
+      "description": "Tan to reddish-brown lesions."
+    },
+    {
+      "id": 21,
+      "name": "Strawberry Botrytis",
+      "crop": "Strawberry",
+      "type": "Fungal",
+      "risk": "High",
+      "image": "https://images.unsplash.com/photo-1464965911861-746a04b4bca6?w=600&q=80",
+      "description": "Gray mold growing on fruit."
+    },
+    {
+      "id": 22,
+      "name": "Peach Leaf Curl",
+      "crop": "Peach",
+      "type": "Fungal",
+      "risk": "Moderate",
+      "image": "https://images.unsplash.com/photo-1633512973353-8824f4cb974c?w=600&q=80",
+      "description": "Red, puckered, and curled leaves."
+    },
+    {
+      "id": 23,
+      "name": "Lemon Scab",
+      "crop": "Lemon",
+      "type": "Fungal",
+      "risk": "Low",
+      "image": "https://images.unsplash.com/photo-1568569350062-ebfa3cb195df?w=600&q=80",
+      "description": "Warty, corky lesions on fruit."
+    },
+    {
+      "id": 24,
+      "name": "Watermelon Wilt",
+      "crop": "Watermelon",
+      "type": "Fungal",
+      "risk": "High",
+      "image": "https://images.unsplash.com/photo-1587049352846-4a222e784d38?w=600&q=80",
+      "description": "Vines wilt during the day and recover at night."
+    },
+    {
+      "id": 25,
+      "name": "Almond Canker",
+      "crop": "Almond",
+      "type": "Fungal",
+      "risk": "High",
+      "image": "https://images.unsplash.com/photo-1583507171266-1e580087f67e?w=600&q=80",
+      "description": "Sunken lesions on branches."
+    },
+    {
+      "id": 26,
+      "name": "Cabbage Black Rot",
+      "crop": "Cabbage",
+      "type": "Bacterial",
+      "risk": "High",
+      "image": "https://images.unsplash.com/photo-1594282486552-05b4d80fbb9f?w=600&q=80",
+      "description": "V-shaped yellow lesions at leaf edges."
+    },
+    {
+      "id": 27,
+      "name": "Cauliflower Mosaic",
+      "crop": "Cauliflower",
+      "type": "Viral",
+      "risk": "Medium",
+      "image": "https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=600&q=80",
+      "description": "Vein clearing and banding."
+    },
+    {
+      "id": 28,
+      "name": "Eggplant Blight",
+      "crop": "Eggplant",
+      "type": "Fungal",
+      "risk": "Medium",
+      "image": "https://images.unsplash.com/photo-1615485290382-441e4d049cb5?w=600&q=80",
+      "description": "Target-like spots on leaves."
+    },
+    {
+      "id": 29,
+      "name": "Garlic Rust",
+      "crop": "Garlic",
+      "type": "Fungal",
+      "risk": "Low",
+      "image": "https://images.unsplash.com/photo-1615477619135-53a22a643039?w=600&q=80",
+      "description": "Orange pustules on leaves."
+    },
+    {
+      "id": 30,
+      "name": "Pumpkin Mildew",
+      "crop": "Pumpkin",
+      "type": "Fungal",
+      "risk": "Common",
+      "image": "https://images.unsplash.com/photo-1570527140771-020891229bb4?w=600&q=80",
+      "description": "White powder on leaf surfaces."
+    }
+  ]
+}

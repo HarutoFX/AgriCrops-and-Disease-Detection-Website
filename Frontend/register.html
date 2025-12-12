@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Register - Crop Portal</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet"/>
+    
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+
+    <link rel="stylesheet" href="style.css?v=1" />
+  </head>
+
+  <body>
+    
+    <div class="container-fluid p-0 overflow-hidden">
+      <div class="row g-0">
+        
+        <div class="col-lg-6 d-none d-lg-block">
+            <div class="auth-image-side" style="background-image: url('https://images.unsplash.com/photo-1592982537447-6f2a6a0c7c18?q=80&w=1000');">
+                <div class="auth-overlay">
+                    <h1 class="display-4 fw-bold">Join the Community.</h1>
+                    <p class="lead mb-0">Create an account to access expert crop advisories and AI tools.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6">
+            <div class="auth-form-side auth-section">
+                
+                <div class="d-flex justify-content-between align-items-center mb-5">
+                    <a class="navbar-brand fw-bold text-success fs-4" href="index.html">🌿 Crop Portal</a>
+                    <button id="themeToggle" class="theme-toggle-btn"><i class="bi bi-brightness-high-fill"></i></button>
+                </div>
+
+                <div class="mx-auto w-100" style="max-width: 400px;">
+                    <h2 class="fw-bold mb-1">Create Account</h2>
+                    <p class="text-muted mb-4">Get started for free today.</p>
+
+                    <div class="mb-4">
+                        <div id="g_id_onload"
+                             data-client_id="589459454228-pmhiubm1j03uo71v5dn66m74i2v17nvj.apps.googleusercontent.com"
+                             data-context="signup"
+                             data-ux_mode="popup"
+                             data-callback="handleCredentialResponse"
+                             data-auto_prompt="false">
+                        </div>
+
+                        <div class="g_id_signin"
+                             data-type="standard"
+                             data-shape="rectangular"
+                             data-theme="outline"
+                             data-text="signup_with"
+                             data-size="large"
+                             data-logo_alignment="left"
+                             data-width="100%">
+                        </div>
+                    </div>
+
+                    <div class="d-flex align-items-center mb-4">
+                        <hr class="flex-grow-1 m-0 text-muted">
+                        <span class="px-3 text-muted small">OR</span>
+                        <hr class="flex-grow-1 m-0 text-muted">
+                    </div>
+
+                    <form>
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="regName" placeholder="John Doe">
+                            <label for="regName">Full Name</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="email" class="form-control" id="regEmail" placeholder="name@example.com">
+                            <label for="regEmail">Email address</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="password" class="form-control" id="regPass" placeholder="Password">
+                            <label for="regPass">Password</label>
+                        </div>
+
+                        <button type="button" class="btn btn-success w-100 py-3 fw-bold animated-button">
+                            Create Account
+                        </button>
+                    </form>
+
+                    <p class="text-center mt-4 text-muted small">
+                        Already have an account? 
+                        <a href="login.html" class="text-success fw-bold text-decoration-none">Login here</a>
+                    </p>
+                </div>
+
+            </div>
+        </div>
+
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>

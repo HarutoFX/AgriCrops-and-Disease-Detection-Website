@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>24/7 Support - Crop Portal</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet"/>
+    
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <link rel="stylesheet" href="style.css?v=1" />
+  </head>
+
+  <body class="d-flex flex-column min-vh-100">
+    <nav class="navbar navbar-expand-lg bg-light shadow-sm sticky-top">
+      <div class="container">
+        <a class="navbar-brand fw-bold text-success" href="index.html">🌿 Crop Portal</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto align-items-center">
+            <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+            <li class="nav-item"><a class="nav-link" href="index.html#uploadModal" data-bs-toggle="modal">Detection</a></li>
+            <li class="nav-item"><a class="nav-link" href="advisories.html">Advisory</a></li>
+            <li class="nav-item"><a class="nav-link active" href="support.html">Support</a></li>
+            <li class="nav-item ms-2">
+              <button id="themeToggle" class="theme-toggle-btn"><i class="bi bi-brightness-high-fill"></i></button>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <header class="bg-success text-white text-center py-5">
+      <div class="container">
+        <h1 class="display-5 fw-bold">24/7 Expert Support</h1>
+        <p class="lead">Our agricultural experts are here to help you day and night.</p>
+      </div>
+    </header>
+
+    <section class="container py-5">
+      <div class="row g-5">
+        
+        <div class="col-lg-6">
+          <div class="mb-5">
+            <h3>Get in Touch</h3>
+            <p class="text-muted">Have an urgent issue with your crops? Reach us directly.</p>
+            
+            <div class="d-flex align-items-center mb-3">
+              <div class="bg-success text-white rounded-circle p-3 me-3"><i class="bi bi-telephone-fill"></i></div>
+              <div>
+                <h6 class="fw-bold mb-0">Emergency Hotline</h6>
+                <p class="mb-0">+91 98765 43210</p>
+              </div>
+            </div>
+
+            <div class="d-flex align-items-center mb-3">
+              <div class="bg-success text-white rounded-circle p-3 me-3"><i class="bi bi-envelope-fill"></i></div>
+              <div>
+                <h6 class="fw-bold mb-0">Email Support</h6>
+                <p class="mb-0">help@cropportal.com</p>
+              </div>
+            </div>
+
+            <div class="d-flex align-items-center">
+              <div class="bg-success text-white rounded-circle p-3 me-3"><i class="bi bi-geo-alt-fill"></i></div>
+              <div>
+                <h6 class="fw-bold mb-0">Headquarters</h6>
+                <p class="mb-0">Pune, Maharashtra, India</p>
+              </div>
+            </div>
+          </div>
+
+          <h3>Frequently Asked Questions</h3>
+          <div class="accordion mt-3" id="faqAccordion">
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
+                  How accurate is the AI detection?
+                </button>
+              </h2>
+              <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">
+                  Our model is trained on over 50,000 labeled images and currently boasts a <strong>95% accuracy rate</strong>.
+                </div>
+              </div>
+            </div>
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
+                  Which crops are currently supported?
+                </button>
+              </h2>
+              <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">
+                  Currently, we support <strong>Potato, Tomato, and Corn</strong>. More crops coming in v2.0.
+                </div>
+              </div>
+            </div>
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
+                  Is this service free?
+                </button>
+              </h2>
+              <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">
+                  Yes! The basic detection and advisory features are <strong>100% free</strong>.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-6">
+          <div class="feature-card h-100 text-start sticky-top" style="top: 100px; z-index: 1;">
+            <h2 class="mb-4"><i class="bi bi-chat-square-text text-success"></i> Send us a Message</h2>
+            
+            <form id="supportPageForm">
+              <div class="row g-3">
+                
+                <div class="col-md-6">
+                  <label class="form-label">Your Name</label>
+                  <input 
+                    type="text" 
+                    class="form-control" 
+                    placeholder="John Doe" 
+                    required
+                    oninput="this.value = this.value.replace(/[^A-Za-z\s]/g, '')"
+                  >
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label">Phone Number</label>
+                  <input 
+                    type="tel" 
+                    class="form-control" 
+                    placeholder="9876543210" 
+                    required
+                    maxlength="10"
+                    oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                  >
+                </div>
+
+                <div class="col-12">
+                  <label class="form-label">Issue Type</label>
+                  <select class="form-select">
+                    <option>Disease Diagnosis Issue</option>
+                    <option>Account Support</option>
+                    <option>General Inquiry</option>
+                  </select>
+                </div>
+                
+                <div class="col-12">
+                  <label class="form-label">Message</label>
+                  <textarea class="form-control" rows="5" placeholder="Describe your problem in detail..." required></textarea>
+                </div>
+                
+                <div class="col-12">
+                  <button type="submit" class="btn btn-success btn-lg w-100">
+                    <i class="bi bi-send"></i> Submit Ticket
+                  </button>
+                </div>
+              </div>
+            </form>
+
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <footer class="footer-section text-center mt-auto">
+      <div class="container">
+        <p class="small mb-0 py-3">© 2025 Crop Portal. All rights reserved.</p>
+      </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>

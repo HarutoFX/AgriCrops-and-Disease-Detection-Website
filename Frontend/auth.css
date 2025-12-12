@@ -1,0 +1,185 @@
+/*
+==============================================
+NEW Professional Auth Page Styles
+(For login.html and register.html)
+==============================================
+*/
+
+/* Centering container */
+.auth-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - 71px); /* Full height minus navbar */
+  padding: 2rem 0;
+}
+
+.auth-form-box {
+  background-color: var(--card-bg);
+  padding: 2.5rem;
+  border-radius: 10px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  width: 100%;
+  max-width: 400px; /* Made slightly narrower for the EA look */
+}
+
+[data-theme="dark"] .auth-form-box {
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+/* Form Animation */
+@keyframes formFadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.auth-form-animated {
+  animation: formFadeInUp 1s ease-out 0.2s; /* Apply animation */
+  animation-fill-mode: forwards; /* Stay visible */
+  opacity: 0; /* Start invisible */
+}
+
+/* Make form inputs a bit larger */
+.form-control-lg {
+  padding: 0.8rem 1rem;
+  font-size: 1rem;
+}
+
+/* ==============================================
+Styles for Code Verify & Success Message
+==============================================
+*/
+
+/* Style for the 6-digit code input */
+.code-input {
+  text-align: center;
+  letter-spacing: 0.5rem; /* Spreads out the 6 digits */
+  font-size: 1.5rem !important;
+  font-weight: bold;
+}
+
+/* Success message box (hidden by default) */
+.auth-success-message {
+  display: none; /* Hidden until JS shows it */
+  text-align: center;
+}
+
+.auth-success-message i {
+  font-size: 3rem;
+  color: var(--primary);
+}
+
+/* ==============================================
+Password View Toggle Styles
+==============================================
+*/
+
+.password-wrapper {
+  position: relative;
+}
+
+.password-toggle-icon {
+  position: absolute;
+  top: 50%;
+  right: 1rem;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #6c757d; /* Bootstrap's default secondary text color */
+}
+
+[data-theme="dark"] .password-toggle-icon {
+  color: #aaa; /* Lighter color for dark mode */
+}
+
+/*
+==============================================
+EA-Style Login Page Styles
+==============================================
+*/
+
+.auth-logo {
+  font-size: 3rem;
+  font-weight: bold;
+  color: var(--primary);
+  display: block;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+.auth-logo i {
+  font-size: 3rem;
+  color: var(--primary);
+}
+
+/* Icon-based social login */
+.social-icon-group {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+
+.social-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: 1px solid var(--border-color);
+  font-size: 1.5rem;
+  color: var(--text-dark);
+  transition: all 0.2s ease;
+}
+
+.social-icon:hover {
+  background-color: var(--primary);
+  color: #fff;
+  border-color: var(--primary);
+}
+
+/* Simple text "OR" divider */
+.divider-text {
+  text-align: center;
+  color: #888;
+  margin-bottom: 1.5rem;
+  font-size: 0.9rem;
+}
+
+/* Full-width outline button */
+.btn-outline-full {
+  display: block;
+  width: 100%;
+  padding: 0.75rem;
+  text-align: center;
+  border: 1px solid var(--border-color);
+  color: var(--text-dark);
+  font-weight: 500;
+  border-radius: 0.25rem;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.btn-outline-full:hover {
+  background-color: var(--primary);
+  border-color: var(--primary);
+  color: #fff;
+}
+
+/*
+==============================================
+NEW Profile Page Avatar Style
+==============================================
+*/
+.profile-avatar {
+  font-size: 6rem;
+  color: var(--primary);
+  text-align: center;
+  display: block;
+  margin-bottom: 1rem;
+}

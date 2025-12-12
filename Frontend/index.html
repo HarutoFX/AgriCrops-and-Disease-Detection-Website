@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Crop Portal - Instant Crop Disease Diagnosis</title>
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css?v=1" />
+  </head>
+
+  <body>
+    <nav class="navbar navbar-expand-lg bg-light shadow-sm sticky-top">
+      <div class="container">
+        <a class="navbar-brand fw-bold text-success" href="index.html">
+          🌿 Crop Portal
+        </a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto align-items-center">
+            <li class="nav-item">
+              <a class="nav-link active" href="index.html">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="analysis.html">Detection</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="advisories.html">Advisory</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="support.html">Support</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="login.html">Login / Register</a>
+            </li>
+            <li class="nav-item ms-2">
+              <button
+                id="themeToggle"
+                class="theme-toggle-btn"
+                aria-label="Toggle Theme"
+              >
+                <i class="bi bi-brightness-high-fill"></i>
+              </button>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <section class="hero-section text-center text-white d-flex align-items-center"
+             data-bg="https://images.unsplash.com/photo-1625246333195-78d9c38ad449?auto-format&fit=crop&q=80">
+      <div class="container py-5">
+        <h1 class="display-4 fw-bold">Instant Crop Disease Diagnosis</h1>
+        <p class="lead mt-3 mb-4">
+          Upload a leaf image to get a real-time diagnosis, treatment, and expert
+          advisory — powered by AI.
+        </p>
+
+        <a href="analysis.html" class="btn btn-light btn-lg me-3 animated-button">
+          <i class="bi bi-camera"></i> Start Detection
+        </a>
+        <a href="advisories.html" class="btn btn-outline-light btn-lg">
+          <i class="bi bi-grid"></i> View Advisories
+        </a>
+      </div>
+    </section>
+
+    <div class="modal fade" id="uploadModal">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Upload Leaf Image</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+          <div class="modal-body text-center">
+            <div class="upload-area mb-3" id="uploadArea">
+              <i class="bi bi-cloud-upload display-4 text-muted"></i>
+              <p class="mb-0 mt-2">Drag & drop image here or click to upload</p>
+              <input type="file" id="fileInput" hidden accept="image/*">
+            </div>
+            <div id="previewArea" class="d-none">
+                <img id="imagePreview" class="img-fluid rounded mb-3" style="max-height: 300px;">
+                <div class="d-grid gap-2 col-6 mx-auto">
+                    <button id="analyzeButton" class="btn btn-success btn-lg">
+                        <i class="bi bi-cpu"></i> Analyze Image
+                    </button>
+                    <div id="analysisSpinner" class="d-none">
+                        <div class="spinner-border text-success" role="status"></div>
+                        <p class="mt-2">Analyzing leaf patterns...</p>
+                    </div>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="resultModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header bg-success text-white">
+            <h5 class="modal-title"><i class="bi bi-check-circle-fill me-2"></i>Analysis Complete</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="text-center mb-4">
+                <img id="resultImage" src="" class="img-thumbnail mb-3" style="height: 150px; object-fit: cover;">
+                <h3 id="resultDisease" class="fw-bold text-dark">Disease Name</h3>
+                <span id="confidenceBadge" class="badge bg-success rounded-pill">95% Confidence</span>
+            </div>
+            <div class="alert alert-light border">
+                <h6 class="fw-bold text-success"><i class="bi bi-info-circle me-2"></i>Diagnosis</h6>
+                <p id="resultDescription" class="mb-0 small">Description goes here...</p>
+            </div>
+            <h6 class="fw-bold mt-4 mb-3"><i class="bi bi-bandaid me-2"></i>Recommended Treatment</h6>
+            <ul id="resultTreatment" class="list-group list-group-flush small"></ul>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <a href="advisories.html" class="btn btn-outline-success">View Full Advisory</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <section class="features-section py-5">
+      <div class="container">
+        <h2 class="text-center mb-5">Why Choose Us</h2>
+        <div class="row g-4 justify-content-center">
+          
+          <div class="col-md-6 col-lg-4">
+            <div class="feature-card clickable-card" onclick="location.href='analysis.html'">
+              <i class="bi bi-lightning-charge"></i>
+              <h3>Instant Analysis</h3>
+              <p>Get disease detection results within seconds. <strong>Click to start.</strong></p>
+            </div>
+          </div>
+          
+          <div class="col-md-6 col-lg-4">
+            <div class="feature-card clickable-card" onclick="location.href='advisories.html'">
+              <i class="bi bi-graph-up"></i>
+              <h3>Expert Advisory</h3>
+              <p>Professional guidance and treatment plans. <strong>Click to view.</strong></p>
+            </div>
+          </div>
+          
+          <div class="col-md-6 col-lg-4">
+            <div class="feature-card clickable-card" onclick="location.href='support.html'">
+              <i class="bi bi-headset"></i>
+              <h3>24/7 Support</h3>
+              <p>Need help? <strong>Click to contact</strong> our expert support team anytime.</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <section class="how-it-works py-5 bg-secondary-custom">
+      <div class="container">
+        <h2 class="text-center mb-5">How It Works</h2>
+        <div class="row">
+          
+          <div class="col-md-4 text-center mb-4 mb-md-0">
+            <div class="step-card clickable-card" data-bs-toggle="modal" data-bs-target="#uploadModal">
+              <div class="step-number">1</div>
+              <h4>Upload Image</h4>
+              <p>Take a clear photo of the affected leaf and <strong>click here to upload</strong>.</p>
+            </div>
+          </div>
+          
+          <div class="col-md-4 text-center mb-4 mb-md-0">
+            <div class="step-card clickable-card h-100 d-flex flex-column justify-content-center align-items-center" onclick="location.href='analysis.html'">
+              <div class="step-number pulse-green">2</div>
+              <h4>AI Analysis</h4>
+              <p>Our AI model analyzes the image for disease patterns automatically.</p>
+            </div>
+          </div>
+          
+          <div class="col-md-4 text-center">
+            <div class="step-card clickable-card h-100 d-flex flex-column justify-content-center align-items-center" onclick="location.href='advisories.html'">
+              <div class="step-number">3</div>
+              <h4>Get Results</h4>
+              <p>Receive detailed diagnosis and treatment recommendations instantly.</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer-section text-center mt-auto">
+      <div class="container">
+        <div class="row text-start">
+          <div class="col-md-4 mb-3">
+            <h5>About Crop Portal</h5>
+            <p>
+              A smart agriculture platform for instant crop disease diagnosis
+              and expert advisory — bridging AI and farming.
+            </p>
+          </div>
+          <div class="col-md-4 mb-3">
+            <h5>Quick Links</h5>
+            <ul class="nav flex-column">
+              <li><a class="nav-link" href="index.html">Home</a></li>
+              <li><a class="nav-link" href="analysis.html">Detection</a></li>
+              <li><a class="nav-link" href="advisories.html">Advisory</a></li>
+              <li><a class="nav-link" href="support.html">Support</a></li>
+            </ul>
+          </div>
+          <div class="col-md-4 mb-3">
+            <h5>Connect</h5>
+            <div class="social-links">
+              <a href="#"><i class="bi bi-facebook"></i></a>
+              <a href="#"><i class="bi bi-twitter"></i></a>
+              <a href="#"><i class="bi bi-instagram"></i></a>
+            </div>
+          </div>
+        </div>
+        <hr class="mt-4" />
+        <p class="small mb-0">© 2025 Crop Portal. All rights reserved.</p>
+      </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>

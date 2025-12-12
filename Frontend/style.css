@@ -1,0 +1,536 @@
+:root {
+  --primary: #28a745;
+  --primary-dark: #1e7e34;
+  --bg-light: #ffffff;
+  --text-dark: #333333;
+  --card-bg: #ffffff;
+  --border-color: #dee2e6;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: var(--bg-light);
+  color: var(--text-dark);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Hero Section */
+.hero-section {
+  position: relative;
+  background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.7)),
+              var(--bg-image);
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  min-height: 80vh;
+}
+
+.hero-section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: #1a1a1a;
+  z-index: -1;
+}
+
+/* Feature Cards & Step Cards */
+.feature-card, 
+.step-card {
+  text-align: center;
+  padding: 2rem;
+  border-radius: 10px;
+  background: white;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  transition: transform 0.3s;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.feature-card:hover {
+  transform: translateY(-10px);
+}
+
+.feature-card i {
+  font-size: 2.5rem;
+  color: var(--primary);
+  margin-bottom: 1rem;
+}
+
+/* How It Works Specifics */
+.step-number {
+  width: 40px;
+  height: 40px;
+  background: var(--primary);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1rem;
+  font-weight: bold;
+  flex-shrink: 0;
+}
+
+/* Upload Modal */
+.upload-area {
+  border: 2px dashed #dee2e6;
+  padding: 2rem;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.upload-area:hover {
+  border-color: var(--primary);
+  background-color: rgba(40, 167, 69, 0.05);
+}
+
+/* Navbar Styling */
+.navbar {
+    background: rgba(255, 255, 255, 0.98) !important;
+    padding: 1rem 0;
+}
+
+.navbar-brand {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #28a745 !important;
+}
+
+.nav-link {
+    font-weight: 500;
+    color: #2d3436;
+    margin: 0 0.5rem;
+    transition: color 0.3s ease;
+}
+
+.nav-link:hover {
+    color: #28a745;
+}
+
+.nav-link.active {
+    color: #28a745 !important;
+}
+
+/* Dark theme navbar */
+[data-theme="dark"] .navbar {
+    background: rgba(26, 26, 26, 0.98) !important;
+}
+
+[data-theme="dark"] .nav-link {
+    color: #f5f5ff;
+}
+
+[data-theme="dark"] .nav-link:hover {
+    color: #2ecc71;
+}
+
+[data-theme="dark"] .nav-link.active {
+    color: #2ecc71 !important;
+}
+
+/* Dark Theme Variables */
+[data-theme="dark"] {
+  --primary: #32CD32; /* Lime Green */
+  --primary-dark: #228B22;
+  --bg-light: #1a1a1a;
+  --text-dark: #ffffff;
+  --card-bg: #2d2d2d;
+  --border-color: #404040;
+}
+
+[data-theme="dark"] body {
+  background-color: #1a1a1a;
+  color: #fff;
+}
+
+[data-theme="dark"] .navbar {
+  background-color: #1a1a1a !important;
+  border-bottom: 1px solid var(--border-color);
+}
+
+[data-theme="dark"] .navbar-brand {
+  color: #32CD32 !important;
+}
+
+[data-theme="dark"] .feature-card,
+[data-theme="dark"] .step-card {
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-color);
+}
+
+[data-theme="dark"] .feature-card i,
+[data-theme="dark"] .step-number {
+  color: #32CD32;
+}
+
+[data-theme="dark"] .btn-outline-light:hover {
+  background-color: #32CD32;
+  border-color: #32CD32;
+}
+
+[data-theme="dark"] .modal-content {
+  background-color: var(--card-bg);
+  color: var(--text-dark);
+}
+
+[data-theme="dark"] .footer-section {
+  background-color: #1a1a1a;
+  color: #ffffff;
+}
+
+/* Theme toggle button */
+.theme-toggle-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f8f9fa;
+    color: #2d3436;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    border: none;
+    transition: transform 0.3s;
+}
+
+.theme-toggle-btn:hover {
+    transform: rotate(15deg);
+}
+
+[data-theme="dark"] .theme-toggle-btn {
+  background: #2d2d2d;
+  color: #32CD32;
+  border: 1px solid #32CD32;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+/* Footer */
+.footer-section {
+    background-color: #f8f9fa;
+    padding: 3rem 0;
+    color: #6c757d;
+}
+
+[data-theme="dark"] .footer-section {
+    background-color: #1a1a1a;
+    color: #999;
+    border-top: 1px solid var(--border-color);
+}
+
+.footer-section h5 {
+    color: var(--text-dark);
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+}
+
+[data-theme="dark"] .footer-section h5 {
+    color: #fff;
+}
+
+.footer-section .nav-link, .footer-section .social-links a {
+    color: #6c757d;
+    transition: color 0.3s;
+}
+
+.footer-section .nav-link:hover, .footer-section .social-links a:hover {
+    color: var(--primary);
+}
+
+[data-theme="dark"] .footer-section .nav-link, 
+[data-theme="dark"] .footer-section .social-links a {
+    color: #999;
+}
+
+/* --- ANIMATIONS --- */
+@keyframes pulseGlow {
+  0% { transform: scale(1); box-shadow: 0 0 5px rgba(40, 167, 69, 0.5); }
+  50% { transform: scale(1.05); box-shadow: 0 0 20px rgba(40, 167, 69, 1), 0 0 30px rgba(40, 167, 69, 0.7); }
+  100% { transform: scale(1); box-shadow: 0 0 5px rgba(40, 167, 69, 0.5); }
+}
+
+.animated-button {
+  animation: pulseGlow 2s infinite ease-in-out;
+}
+
+[data-theme="dark"] .animated-button {
+  animation-name: pulseGlowDark; 
+}
+
+@keyframes pulseGlowDark {
+  0% { transform: scale(1); box-shadow: 0 0 5px rgba(50, 205, 50, 0.5); }
+  50% { transform: scale(1.05); box-shadow: 0 0 20px rgba(50, 205, 50, 1), 0 0 30px rgba(50, 205, 50, 0.7); }
+  100% { transform: scale(1); box-shadow: 0 0 5px rgba(50, 205, 50, 0.5); }
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.how-it-works .step-card {
+  animation: fadeInUp 0.8s ease-out forwards;
+  opacity: 0; 
+}
+
+.how-it-works .row > div:nth-child(1) .step-card { animation-delay: 0.2s; }
+.how-it-works .row > div:nth-child(2) .step-card { animation-delay: 0.4s; }
+.how-it-works .row > div:nth-child(3) .step-card { animation-delay: 0.6s; }
+
+/* Advisory Overlay */
+.advisory-card {
+  position: relative;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease;
+}
+
+.advisory-card:hover { transform: translateY(-5px); }
+
+.advisory-card img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.card-overlay {
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background-color: rgba(26, 26, 26, 0.85);
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+  text-align: center;
+}
+
+[data-theme="dark"] .card-overlay { background-color: rgba(45, 45, 45, 0.9); }
+.advisory-card:hover .card-overlay { opacity: 1; }
+.overlay-content { color: #ffffff; }
+.overlay-content h4 { font-weight: bold; margin-bottom: 1rem; }
+
+/* Custom Section Background */
+.bg-secondary-custom {
+  background-color: #f8f9fa; 
+}
+
+[data-theme="dark"] .bg-secondary-custom {
+  background-color: #111111; 
+}
+
+/* Clickable Cards */
+.clickable-card {
+  cursor: pointer;
+  transition: transform 0.3s, box-shadow 0.3s;
+  position: relative;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.clickable-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 10px 25px rgba(40, 167, 69, 0.2);
+  border: 1px solid var(--primary);
+}
+
+.clickable-card:active {
+  transform: scale(0.98);
+}
+
+/* Pulse Animation */
+.pulse-green {
+  animation: pulse-green 2s infinite;
+}
+
+@keyframes pulse-green {
+  0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(40, 167, 69, 0.7); }
+  70% { transform: scale(1.1); box-shadow: 0 0 0 10px rgba(40, 167, 69, 0); }
+  100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(40, 167, 69, 0); }
+}
+
+/* ==============================================
+   ✅ DARK MODE TEXT VISIBILITY FIXES
+   ============================================== */
+
+[data-theme="dark"] .advisory-card p,
+[data-theme="dark"] .advisory-card .text-muted,
+[data-theme="dark"] .advisory-card .small {
+    color: #e0e0e0 !important; 
+}
+
+[data-theme="dark"] .advisory-card h4,
+[data-theme="dark"] .advisory-card h5 {
+    color: #ffffff !important; 
+}
+
+[data-theme="dark"] .text-success {
+    color: #4ade80 !important;
+}
+
+/* ==============================================
+   ✅ NEW LOGIN / REGISTER SPLIT LAYOUT
+   ============================================== */
+
+.auth-section {
+    min-height: 100vh;
+    width: 100%;
+    background-color: var(--bg-light);
+}
+
+.auth-image-side {
+    background-image: url('https://images.unsplash.com/photo-1625246333195-78d9c38ad449?q=80&w=1000&auto=format&fit=crop');
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    min-height: 100vh;
+}
+
+.auth-overlay {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,0,0,0.7));
+    display: flex; flex-direction: column; justify-content: flex-end;
+    padding: 3rem; color: white;
+}
+
+.auth-form-side {
+    display: flex; flex-direction: column; justify-content: center;
+    padding: 4rem; background-color: var(--bg-light);
+}
+
+.btn-google {
+    background-color: white; color: #333; border: 1px solid #ddd;
+    position: relative; transition: all 0.3s;
+}
+
+.btn-google:hover {
+    background-color: #f8f9fa; transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+}
+
+[data-theme="dark"] .auth-section,
+[data-theme="dark"] .auth-form-side {
+    background-color: #1a1a1a;
+}
+
+[data-theme="dark"] .btn-google {
+    background-color: #2d2d2d; color: white; border-color: #444;
+}
+
+[data-theme="dark"] .btn-google:hover {
+    background-color: #3d3d3d;
+}
+
+@media (max-width: 768px) {
+    .auth-image-side { display: none; }
+    .auth-form-side { padding: 2rem; }
+}
+
+/* ==============================================
+   ✅ DARK MODE FORM FIXES (FINAL VERSION)
+   ============================================== */
+
+/* 1. Remove the White Box behind the label */
+[data-theme="dark"] .form-floating > label::after {
+    background-color: #2d2d2d !important;
+}
+
+/* 2. Make the label text readable */
+[data-theme="dark"] .form-floating > label {
+    color: #a0a0a0 !important;
+}
+
+/* 3. Input Background & Text */
+[data-theme="dark"] .form-control,
+[data-theme="dark"] .input-group-text {
+    background-color: #2d2d2d !important;
+    border-color: #444;
+    color: #ffffff !important;
+}
+
+/* 4. Placeholder Transparency Fix (Prevents Overlap) */
+/* Hide by default */
+[data-theme="dark"] .form-floating .form-control::placeholder {
+    color: transparent !important;
+}
+/* Show only when focused */
+[data-theme="dark"] .form-floating .form-control:focus::placeholder {
+    color: #6c757d !important;
+}
+/* Keep standard placeholders visible (for search bars) */
+[data-theme="dark"] .form-control:not(.form-floating .form-control)::placeholder {
+    color: #888;
+}
+
+/* 5. Focus Border */
+.form-control:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 0.25rem rgba(40, 167, 69, 0.25);
+}
+
+/* 6. Auto-fill Background Fix */
+[data-theme="dark"] input:-webkit-autofill,
+[data-theme="dark"] input:-webkit-autofill:hover, 
+[data-theme="dark"] input:-webkit-autofill:focus, 
+[data-theme="dark"] input:-webkit-autofill:active{
+    -webkit-box-shadow: 0 0 0 30px #2d2d2d inset !important;
+    -webkit-text-fill-color: white !important;
+    transition: background-color 5000s ease-in-out 0s;
+}
+/* ==============================================
+   ✅ DARK MODE LOGIN TEXT FIX
+   ============================================== */
+
+/* 1. Force "Please enter details", "OR", and bottom links to be White */
+[data-theme="dark"] .auth-form-side .text-muted,
+[data-theme="dark"] .auth-form-side p,
+[data-theme="dark"] .auth-form-side span {
+    color: #e0e0e0 !important; /* Bright Light Grey */
+}
+
+/* 2. Ensure the "Welcome Back" Heading is Pure White */
+[data-theme="dark"] .auth-form-side h2 {
+    color: #ffffff !important;
+}
+
+/* 3. Fix the "Forgot Password" and "Create Account" links */
+[data-theme="dark"] .auth-form-side a.text-success {
+    color: #4ade80 !important; /* Brighter Neon Green for readability */
+}
+/* ==============================================
+   ✅ DARK MODE PROFILE PAGE FIXES
+   ============================================== */
+
+/* 1. Fix the "Email cannot be changed" text */
+[data-theme="dark"] .form-text {
+    color: #a0a0a0 !important; /* Light Grey instead of invisible dark grey */
+}
+
+/* 2. Ensure all Profile Card labels are bright */
+[data-theme="dark"] .feature-card label {
+    color: #ffffff !important;
+}
+
+/* 3. Fix the "Farmer / User" badge text color if needed */
+[data-theme="dark"] .badge.bg-success {
+    color: #ffffff !important;
+}
+/* ==============================================
+   ✅ DARK MODE NAVBAR TEXT FIX
+   ============================================== */
+
+/* Forces "Welcome, User!" to be White in Dark Mode */
+[data-theme="dark"] .navbar-text {
+    color: #ffffff !important;
+}
