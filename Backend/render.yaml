@@ -2,8 +2,10 @@ services:
   - type: web
     name: crop-portal-backend
     env: python
+    pythonVersion: 3.10
     buildCommand: pip install -r requirements.txt
     startCommand: gunicorn app:app
+    healthCheckPath: /api/health
     envVars:
       - key: FLASK_ENV
         value: production
@@ -11,5 +13,3 @@ services:
         generateValue: true
       - key: JWT_SECRET
         generateValue: true
-      - key: PYTHON_VERSION
-        value: 3.14.0
