@@ -3,13 +3,13 @@ from flask_cors import CORS
 from werkzeug.utils import secure_filename
 from datetime import datetime, timedelta
 import time
-import random
 import os
 import logging
 import sqlite3
 import json
 import jwt
 import functools
+from detection_service import analyze_crop_image
 
 app = Flask(__name__)
 
@@ -138,40 +138,6 @@ def require_auth(f):
 
 # ==========================================
 # DISEASE DATABASE
-# ==========================================
-DISEASE_DB = [
-    {
-        "disease": "Potato Early Blight",
-        "confidence": 0.94,
-        "description": "Fungal infection characterized by concentric rings on dark spots.",
-        "treatment": ["Apply copper-based fungicides", "Improve air circulation", "Remove infected leaves"],
-        "severity": "High"
-    },
-    {
-        "disease": "Corn Common Rust",
-        "confidence": 0.88,
-        "description": "Reddish-brown pustules appearing on both leaf surfaces.",
-        "treatment": ["Plant resistant varieties", "Apply fungicides early", "Crop rotation"],
-        "severity": "Medium"
-    },
-    {
-        "disease": "Tomato Mosaic Virus",
-        "confidence": 0.91,
-        "description": "Mottling and yellowing of leaves with stunted growth.",
-        "treatment": ["Remove infected plants", "Control aphids", "Disinfect tools"],
-        "severity": "High"
-    },
-    {
-        "disease": "Healthy",
-        "confidence": 0.98,
-        "description": "No signs of disease detected. Plant looks vigorous.",
-        "treatment": ["Continue regular watering", "Monitor weekly", "Maintain soil nutrition"],
-        "severity": "None"
-    }
-]
-
-# ==========================================
-# UTILITY FUNCTIONS
 # ==========================================
 def allowed_file(filename):
     """Check if file has allowed extension"""
@@ -365,11 +331,9 @@ def detect_disease():
         file.save(filepath)
         logger.info(f"File saved to: {filepath}")
         
-        # 6. SIMULATE AI PROCESSING TIME
-        time.sleep(2)
-        
-        # 7. GET DIAGNOSIS (Mock - replace with real AI model)
-        result = random.choice(DISEASE_DB)
+        # 6. RUN REAL IMAGE-BASED ANALYSIS
+        time.sleep(0.5)
+        result = analyze_crop_image(filepath)
         
         # 8. SAVE TO DATABASE
         save_analysis_result(user_email, result, filename)

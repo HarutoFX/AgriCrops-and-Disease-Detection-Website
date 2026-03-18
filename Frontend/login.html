@@ -14,6 +14,7 @@
     <script src="https://accounts.google.com/gsi/client" async defer></script>
 
     <link rel="stylesheet" href="style.css?v=1" />
+    <link rel="stylesheet" href="auth.css?v=1" />
   </head>
 
   <body>
@@ -24,8 +25,26 @@
         <div class="col-lg-6 d-none d-lg-block">
             <div class="auth-image-side">
                 <div class="auth-overlay">
-                    <h1 class="display-4 fw-bold">Smart Farming Starts Here.</h1>
-                    <p class="lead mb-0">Join thousands of farmers using AI to protect their crops.</p>
+                    <div class="section-float">
+                        <h1 class="display-4 fw-bold">Smart Farming Starts Here.</h1>
+                        <p class="lead mb-0">Join thousands of farmers using AI to protect their crops.</p>
+                    </div>
+                    <div class="auth-visual-stack">
+                        <div class="auth-visual-card section-float delay-1">
+                            <i class="bi bi-shield-check"></i>
+                            <div>
+                                <strong>Trusted workflow</strong>
+                                <span>Quick crop diagnosis and guidance</span>
+                            </div>
+                        </div>
+                        <div class="auth-visual-card section-float delay-2">
+                            <i class="bi bi-cpu"></i>
+                            <div>
+                                <strong>Live AI assistance</strong>
+                                <span>Analysis and advisory in one place</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -38,7 +57,11 @@
                     <button id="themeToggle" class="theme-toggle-btn"><i class="bi bi-brightness-high-fill"></i></button>
                 </div>
 
-                <div class="mx-auto w-100" style="max-width: 400px;">
+                <div class="mx-auto w-100 auth-form-shell">
+                    <div class="auth-intro-badges">
+                        <span class="auth-intro-chip"><i class="bi bi-stars"></i> Fast access</span>
+                        <span class="auth-intro-chip"><i class="bi bi-phone"></i> Mobile ready</span>
+                    </div>
                     <h2 class="fw-bold mb-1">Welcome Back</h2>
                     <p class="text-muted mb-4">Please enter your details to sign in.</p>
 
@@ -82,10 +105,10 @@
                                 <input class="form-check-input" type="checkbox" id="rememberMe">
                                 <label class="form-check-label small" for="rememberMe">Remember me</label>
                             </div>
-                            <a href="#" class="text-success small text-decoration-none fw-bold">Forgot Password?</a>
+                            <a href="forgot-password.html" class="text-success small text-decoration-none fw-bold">Forgot Password?</a>
                         </div>
 
-                        <button type="submit" class="btn btn-success w-100 py-3 fw-bold animated-button">
+                        <button type="submit" class="btn btn-success w-100 py-3 fw-bold animated-button magnetic-hover">
                             Sign In
                         </button>
                     </form>
@@ -93,6 +116,9 @@
                     <p class="text-center mt-4 text-muted small">
                         Don't have an account? 
                         <a href="register.html" class="text-success fw-bold text-decoration-none">Create free account</a>
+                    </p>
+                    <p class="text-center auth-trust-copy">
+                        Secure access to crop analysis, advisory history, and your farm dashboard.
                     </p>
                 </div>
 

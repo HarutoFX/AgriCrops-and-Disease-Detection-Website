@@ -1,43 +1,36 @@
-import os
-import time
-import random
-import json
-import logging
-import sqlite3
-from datetime import datetime
-from werkzeug.utils import secure_filename
 from flask import Flask, request, jsonify
 from flask_cors import CORS
+from werkzeug.utils import secure_filename
+from datetime import datetime
+import time
+import os
+import logging
+import sqlite3
+import json
+from detection_service import analyze_crop_image
 
-# ==========================================
-# APP & CONFIG
-# ==========================================
 app = Flask(__name__)
-CORS(app)  # during testing: allow all origins. Lock down later.
-app.config['MAX_CONTENT_LENGTH'] = 5 * 1024 * 1024  # 5MB file limit
 
-# Use absolute paths so the host can write to them reliably
-ROOT_DIR = os.getcwd()
-UPLOAD_FOLDER = os.path.join(ROOT_DIR, 'uploads')
-DATABASE = os.path.join(ROOT_DIR, 'crop_portal.db')
+# ==========================================
+# CONFIGURATION
+# ==========================================
+CORS(app)
+app.config['MAX_CONTENT_LENGTH'] = 5 * 1024 * 1024  # 5MB file limit
+UPLOAD_FOLDER = 'uploads'
+DATABASE = 'crop_portal.db'
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'bmp'}
 
+# Create upload folder if doesn't exist
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
-# ==========================================
-# LOGGING
-# ==========================================
-log_handlers = [logging.StreamHandler()]
-try:
-    log_handlers.append(logging.FileHandler(os.path.join(ROOT_DIR, 'crop_portal.log')))
-except Exception:
-    # If file handler fails due to permissions, continue with stream handler only
-    pass
-
+# Setup logging
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-    handlers=log_handlers
+    handlers=[
+        logging.FileHandler('crop_portal.log'),
+        logging.StreamHandler()
+    ]
 )
 logger = logging.getLogger(__name__)
 
@@ -49,6 +42,8 @@ def init_db():
     try:
         conn = sqlite3.connect(DATABASE)
         cursor = conn.cursor()
+        
+        # Users table
         cursor.execute('''
             CREATE TABLE IF NOT EXISTS users (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -57,6 +52,8 @@ def init_db():
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )
         ''')
+        
+        # Analysis results table
         cursor.execute('''
             CREATE TABLE IF NOT EXISTS analysis_results (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -70,35 +67,26 @@ def init_db():
                 FOREIGN KEY (user_email) REFERENCES users(email)
             )
         ''')
+        
         conn.commit()
         conn.close()
-        logger.info("[+] Database initialized successfully at %s", DATABASE)
+        logger.info("[+] Database initialized successfully")
     except Exception as e:
-        logger.exception("Database initialization error: %s", e)
-
-# Run init_db on import so Gunicorn workers inherit an initialized DB (safe)
-init_db()
+        logger.error(f"Database initialization error: {str(e)}")
 
 # ==========================================
-# MOCK DISEASE DB (replace with model later)
-# ==========================================
-DISEASE_DB = [
-    {"disease": "Potato Early Blight", "confidence": 0.94, "description": "Fungal infection characterized by concentric rings on dark spots.", "treatment": ["Apply copper-based fungicides", "Improve air circulation", "Remove infected leaves"], "severity": "High"},
-    {"disease": "Corn Common Rust",    "confidence": 0.88, "description": "Reddish-brown pustules appearing on both leaf surfaces.", "treatment": ["Plant resistant varieties", "Apply fungicides early", "Crop rotation"], "severity": "Medium"},
-    {"disease": "Tomato Mosaic Virus","confidence": 0.91, "description": "Mottling and yellowing of leaves with stunted growth.", "treatment": ["Remove infected plants", "Control aphids", "Disinfect tools"], "severity": "High"},
-    {"disease": "Healthy",            "confidence": 0.98, "description": "No signs of disease detected. Plant looks vigorous.", "treatment": ["Continue regular watering", "Monitor weekly", "Maintain soil nutrition"], "severity": "None"}
-]
-
-# ==========================================
-# UTILITIES
+# DISEASE DATABASE
 # ==========================================
 def allowed_file(filename):
+    """Check if file has allowed extension"""
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 def save_analysis_result(user_email, result, filename):
+    """Save analysis result to database"""
     try:
         conn = sqlite3.connect(DATABASE)
         cursor = conn.cursor()
+        
         cursor.execute('''
             INSERT INTO analysis_results 
             (user_email, disease, confidence, description, treatment, filename)
@@ -111,14 +99,15 @@ def save_analysis_result(user_email, result, filename):
             json.dumps(result.get('treatment', [])),
             filename
         ))
+        
         conn.commit()
         conn.close()
-        logger.info("Analysis result saved for %s", user_email)
+        logger.info(f"Analysis result saved for {user_email}")
     except Exception as e:
-        logger.exception("Error saving analysis result: %s", e)
+        logger.error(f"Error saving analysis result: {str(e)}")
 
 # ==========================================
-# ROUTES
+# API ROUTES
 # ==========================================
 @app.route('/')
 def home():
@@ -131,57 +120,86 @@ def home():
 
 @app.route('/api/detect', methods=['POST'])
 def detect_disease():
+    """
+    Detect crop disease from uploaded image
+    - Validates file type and size
+    - Simulates AI processing
+    - Returns disease diagnosis with treatment
+    - Saves result to database
+    """
     try:
+        # 1. VALIDATION: Check if image was sent
         if 'imageFile' not in request.files:
-            logger.warning("No file uploaded")
+            logger.warning("Disease detection attempted without file")
             return jsonify({"error": "No file uploaded"}), 400
-
+        
         file = request.files['imageFile']
+        
+        # 2. VALIDATION: Check filename is not empty
         if file.filename == '':
             logger.warning("Empty filename submitted")
             return jsonify({"error": "No file selected"}), 400
-
+        
+        # 3. VALIDATION: Check file extension
         if not allowed_file(file.filename):
-            logger.warning("Invalid file type: %s", file.filename)
-            return jsonify({"error": f"Invalid file type. Allowed: {', '.join(ALLOWED_EXTENSIONS)}"}), 400
-
+            logger.warning(f"Invalid file type: {file.filename}")
+            return jsonify({
+                "error": f"Invalid file type. Allowed: {', '.join(ALLOWED_EXTENSIONS)}"
+            }), 400
+        
+        # 4. Get user email from request (optional)
         user_email = request.form.get('userEmail', 'anonymous')
+        
         filename = secure_filename(file.filename)
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         filepath = os.path.join(UPLOAD_FOLDER, f"{timestamp}_{filename}")
-
-        logger.info("Saving file for %s -> %s", user_email, filepath)
+        
+        logger.info(f"Processing image: {file.filename} for user: {user_email}")
+        
+        # 5. SAVE FILE
         file.save(filepath)
-
-        # Simulate model inference (replace with real model inference)
-        time.sleep(2)
-        result = random.choice(DISEASE_DB)
-
+        logger.info(f"File saved to: {filepath}")
+        
+        # 6. RUN REAL IMAGE-BASED ANALYSIS
+        time.sleep(0.5)
+        result = analyze_crop_image(filepath)
+        
+        # 8. SAVE TO DATABASE
         save_analysis_result(user_email, result, filename)
-
-        response = {**result, "timestamp": datetime.now().isoformat(), "filename": filename}
-        logger.info("Detection result: %s (%.2f)", result['disease'], result['confidence'])
+        
+        # 9. RETURN RESPONSE
+        response = {
+            **result,
+            "timestamp": datetime.now().isoformat(),
+            "filename": filename
+        }
+        
+        logger.info(f"Detection result: {result['disease']} ({result['confidence']*100}% confidence)")
         return jsonify(response), 200
-
+        
     except Exception as e:
-        logger.exception("Error in detect_disease: %s", e)
+        logger.error(f"Error in detect_disease: {str(e)}", exc_info=True)
         return jsonify({"error": "Server error. Please try again."}), 500
 
 @app.route('/api/health', methods=['GET'])
 def health_check():
+    """Health check endpoint"""
     return jsonify({
         "status": "healthy",
-        "database_exists": os.path.exists(DATABASE),
+        "database": os.path.exists(DATABASE),
         "timestamp": datetime.now().isoformat()
     }), 200
 
 @app.route('/api/history', methods=['GET'])
 def get_analysis_history():
+    """Get analysis history for a user"""
     try:
         user_email = request.args.get('email', 'anonymous')
+        
         conn = sqlite3.connect(DATABASE)
         conn.row_factory = sqlite3.Row
         cursor = conn.cursor()
+        
         cursor.execute('''
             SELECT id, disease, confidence, description, created_at 
             FROM analysis_results 
@@ -189,29 +207,45 @@ def get_analysis_history():
             ORDER BY created_at DESC 
             LIMIT 50
         ''', (user_email,))
+        
         results = [dict(row) for row in cursor.fetchall()]
         conn.close()
-        return jsonify({"user": user_email, "results": results, "count": len(results)}), 200
+        
+        return jsonify({
+            "user": user_email,
+            "results": results,
+            "count": len(results)
+        }), 200
     except Exception as e:
-        logger.exception("Error fetching history: %s", e)
+        logger.error(f"Error fetching history: {str(e)}")
         return jsonify({"error": "Failed to fetch history"}), 500
 
 @app.errorhandler(413)
 def too_large(e):
-    logger.warning("File upload exceeded limit")
+    """Handle file too large error"""
+    logger.warning("File upload exceeded 5MB limit")
     return jsonify({"error": "File too large. Maximum size: 5MB"}), 413
 
 @app.errorhandler(404)
 def not_found(e):
+    """Handle 404 errors"""
     return jsonify({"error": "Endpoint not found"}), 404
 
 @app.errorhandler(500)
 def internal_error(e):
-    logger.exception("Internal server error: %s", e)
+    """Handle 500 errors"""
+    logger.error(f"Internal server error: {str(e)}")
     return jsonify({"error": "Internal server error"}), 500
 
-# Note: Do NOT run app.run() when using Gunicorn in production.
-# For local testing you can still run "python app.py" which will use the block below.
+# ==========================================
+# INITIALIZATION
+# ==========================================
 if __name__ == '__main__':
-    logger.info("Starting Crop Portal Backend (local dev)...")
-    app.run(host='0.0.0.0', port=int(os.environ.get('PORT', 5000)), debug=False)
+    init_db()
+    logger.info("[*] Starting Crop Portal Backend...")
+    logger.info("[+] File Upload Validation: Enabled")
+    logger.info("[+] CORS: Enabled")
+    logger.info("[+] Max File Size: 5MB")
+    logger.info("[+] Allowed formats: PNG, JPG, JPEG, GIF, BMP")
+    logger.info("[+] Database: SQLite initialized")
+    app.run(debug=True, port=5000)

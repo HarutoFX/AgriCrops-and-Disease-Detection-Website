@@ -7,10 +7,10 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 from werkzeug.utils import secure_filename
 import os
-import random
 import logging
 from datetime import datetime
 import sqlite3
+from detection_service import analyze_crop_image
 
 # ============================================================================
 # APP CONFIGURATION
@@ -96,33 +96,6 @@ def init_db():
     logger.info('[+] Database initialized successfully')
 
 # ============================================================================
-# DISEASE DATABASE (Mock AI Model)
-# ============================================================================
-
-DISEASE_DB = {
-    'Potato Early Blight': {
-        'confidence': 92.5,
-        'description': 'Dark concentric rings on older leaves, causing leaf yellowing and defoliation.',
-        'treatment': ['Remove infected leaves', 'Apply copper-based fungicide', 'Improve air circulation', 'Rotate crops annually']
-    },
-    'Tomato Leaf Curl': {
-        'confidence': 88.3,
-        'description': 'Viral disease causing upward curling of leaves and stunted plant growth.',
-        'treatment': ['Remove infected plants', 'Control whitefly populations', 'Use resistant varieties', 'Apply neem oil spray']
-    },
-    'Rice Blast': {
-        'confidence': 90.1,
-        'description': 'Fungal disease with diamond-shaped lesions on leaves and stems.',
-        'treatment': ['Apply systemic fungicides', 'Use resistant varieties', 'Proper water management', 'Remove infected debris']
-    },
-    'Healthy Crop': {
-        'confidence': 95.0,
-        'description': 'No disease detected. The crop appears healthy with normal growth patterns.',
-        'treatment': ['Continue regular monitoring', 'Maintain proper irrigation', 'Follow preventive care', 'Keep records']
-    }
-}
-
-# ============================================================================
 # FILE VALIDATION
 # ============================================================================
 
@@ -167,11 +140,12 @@ def detect_disease():
     """
     try:
         # Check if file is present
-        if 'image' not in request.files:
+        upload = request.files.get('image') or request.files.get('imageFile')
+        if upload is None:
             logger.warning('[!] No image file in request')
             return jsonify({'error': 'No image file provided'}), 400
         
-        file = request.files['image']
+        file = upload
         
         # Check if file is selected
         if file.filename == '':
@@ -193,22 +167,22 @@ def detect_disease():
         file.save(filepath)
         logger.info(f'[+] File saved: {filename}')
         
-        # Mock AI Prediction (Replace with real model later)
-        disease_name = random.choice(list(DISEASE_DB.keys()))
-        disease_info = DISEASE_DB[disease_name]
+        diagnosis = analyze_crop_image(filepath)
         
         # Prepare response
         result = {
             'success': True,
-            'disease': disease_name,
-            'confidence': disease_info['confidence'],
-            'description': disease_info['description'],
-            'treatment': disease_info['treatment'],
+            'disease': diagnosis['disease'],
+            'confidence': diagnosis['confidence'],
+            'description': diagnosis['description'],
+            'treatment': diagnosis['treatment'],
+            'severity': diagnosis['severity'],
+            'analysis_type': diagnosis['analysis_type'],
             'filename': filename,
             'timestamp': datetime.now().isoformat()
         }
         
-        logger.info(f'[*] Detection complete: {disease_name} ({disease_info["confidence"]}%)')
+        logger.info(f'[*] Detection complete: {diagnosis["disease"]} ({diagnosis["confidence"] * 100:.2f}%)')
         return jsonify(result), 200
         
     except Exception as e:

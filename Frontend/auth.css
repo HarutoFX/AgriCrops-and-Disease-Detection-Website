@@ -1,84 +1,68 @@
 /*
 ==============================================
-NEW Professional Auth Page Styles
-(For login.html and register.html)
+Refined Auth Experience
 ==============================================
 */
 
-/* Centering container */
 .auth-container {
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: calc(100vh - 71px); /* Full height minus navbar */
-  padding: 2rem 0;
+  min-height: calc(100vh - 71px);
+  padding: 3rem 1rem;
 }
 
 .auth-form-box {
-  background-color: var(--card-bg);
-  padding: 2.5rem;
-  border-radius: 10px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  position: relative;
   width: 100%;
-  max-width: 400px; /* Made slightly narrower for the EA look */
+  max-width: 460px;
+  padding: 2.75rem;
+  border-radius: 28px;
+  overflow: hidden;
 }
 
-[data-theme="dark"] .auth-form-box {
-  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-}
-
-/* Form Animation */
-@keyframes formFadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.auth-form-box::after {
+  content: '';
+  position: absolute;
+  top: -4rem;
+  right: -4rem;
+  width: 10rem;
+  height: 10rem;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(244, 185, 66, 0.22), transparent 65%);
+  pointer-events: none;
 }
 
 .auth-form-animated {
-  animation: formFadeInUp 1s ease-out 0.2s; /* Apply animation */
-  animation-fill-mode: forwards; /* Stay visible */
-  opacity: 0; /* Start invisible */
+  animation: formFloatIn 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  opacity: 0;
 }
 
-/* Make form inputs a bit larger */
+.auth-form-animated.delay-soft {
+  animation-delay: 0.12s;
+}
+
 .form-control-lg {
-  padding: 0.8rem 1rem;
+  padding: 0.9rem 1rem;
   font-size: 1rem;
 }
 
-/* ==============================================
-Styles for Code Verify & Success Message
-==============================================
-*/
-
-/* Style for the 6-digit code input */
 .code-input {
   text-align: center;
-  letter-spacing: 0.5rem; /* Spreads out the 6 digits */
-  font-size: 1.5rem !important;
-  font-weight: bold;
+  letter-spacing: 0.45rem;
+  font-size: 1.45rem !important;
+  font-weight: 700;
 }
 
-/* Success message box (hidden by default) */
 .auth-success-message {
-  display: none; /* Hidden until JS shows it */
+  display: none;
   text-align: center;
 }
 
 .auth-success-message i {
-  font-size: 3rem;
+  font-size: 3.2rem;
   color: var(--primary);
 }
-
-/* ==============================================
-Password View Toggle Styles
-==============================================
-*/
 
 .password-wrapper {
   position: relative;
@@ -90,33 +74,37 @@ Password View Toggle Styles
   right: 1rem;
   transform: translateY(-50%);
   cursor: pointer;
-  color: #6c757d; /* Bootstrap's default secondary text color */
+  color: #6c757d;
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.password-toggle-icon:hover {
+  color: var(--primary);
+  transform: translateY(-50%) scale(1.08);
 }
 
 [data-theme="dark"] .password-toggle-icon {
-  color: #aaa; /* Lighter color for dark mode */
+  color: #9eb1a3;
 }
 
-/*
-==============================================
-EA-Style Login Page Styles
-==============================================
-*/
+.auth-logo,
+.profile-avatar {
+  display: block;
+  text-align: center;
+  color: var(--primary);
+}
 
 .auth-logo {
   font-size: 3rem;
-  font-weight: bold;
-  color: var(--primary);
-  display: block;
-  text-align: center;
+  font-weight: 700;
   margin-bottom: 1rem;
 }
-.auth-logo i {
-  font-size: 3rem;
-  color: var(--primary);
+
+.profile-avatar {
+  font-size: 6rem;
+  margin-bottom: 1rem;
 }
 
-/* Icon-based social login */
 .social-icon-group {
   display: flex;
   justify-content: center;
@@ -132,37 +120,36 @@ EA-Style Login Page Styles
   height: 50px;
   border-radius: 50%;
   border: 1px solid var(--border-color);
-  font-size: 1.5rem;
+  font-size: 1.4rem;
   color: var(--text-dark);
-  transition: all 0.2s ease;
+  transition: all 0.25s ease;
 }
 
 .social-icon:hover {
   background-color: var(--primary);
   color: #fff;
   border-color: var(--primary);
+  transform: translateY(-2px);
 }
 
-/* Simple text "OR" divider */
 .divider-text {
   text-align: center;
-  color: #888;
-  margin-bottom: 1.5rem;
-  font-size: 0.9rem;
+  color: var(--text-muted);
+  margin-bottom: 1.25rem;
+  font-size: 0.92rem;
 }
 
-/* Full-width outline button */
 .btn-outline-full {
   display: block;
   width: 100%;
-  padding: 0.75rem;
+  padding: 0.85rem 1rem;
   text-align: center;
   border: 1px solid var(--border-color);
   color: var(--text-dark);
-  font-weight: 500;
-  border-radius: 0.25rem;
+  font-weight: 600;
+  border-radius: 999px;
   text-decoration: none;
-  transition: all 0.2s ease;
+  transition: all 0.25s ease;
 }
 
 .btn-outline-full:hover {
@@ -171,15 +158,64 @@ EA-Style Login Page Styles
   color: #fff;
 }
 
-/*
-==============================================
-NEW Profile Page Avatar Style
-==============================================
-*/
-.profile-avatar {
-  font-size: 6rem;
-  color: var(--primary);
+.auth-badge-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+
+.auth-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.55rem 0.9rem;
+  border-radius: 999px;
+  background: rgba(47, 158, 68, 0.1);
+  color: var(--text-dark);
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+
+.auth-panel-note {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+}
+
+.forgot-hero-copy {
   text-align: center;
-  display: block;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.forgot-hero-copy h2 {
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.forgot-hero-copy p {
+  color: var(--text-muted);
+}
+
+@keyframes formFloatIn {
+  from {
+    opacity: 0;
+    transform: translateY(24px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@media (max-width: 768px) {
+  .auth-container {
+    padding: 1.5rem 0.75rem 2rem;
+  }
+
+  .auth-form-box {
+    padding: 2rem 1.35rem;
+    border-radius: 24px;
+  }
 }

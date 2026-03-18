@@ -49,7 +49,7 @@
               <a class="nav-link" href="support.html">Support</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="login.html">Login / Register</a>
+              <a class="nav-link" href="login.html" id="authNavLink">Login / Register</a>
             </li>
             <li class="nav-item ms-2">
               <button
@@ -65,20 +65,105 @@
       </div>
     </nav>
 
-    <section class="hero-section text-center text-white d-flex align-items-center"
+    <section class="hero-section text-white d-flex align-items-center"
              data-bg="https://images.unsplash.com/photo-1625246333195-78d9c38ad449?auto-format&fit=crop&q=80">
+      <div class="hero-particles" id="heroParticles" aria-hidden="true"></div>
+      <div class="hero-glow hero-glow-one" aria-hidden="true"></div>
+      <div class="hero-glow hero-glow-two" aria-hidden="true"></div>
       <div class="container py-5">
-        <h1 class="display-4 fw-bold">Instant Crop Disease Diagnosis</h1>
-        <p class="lead mt-3 mb-4">
-          Upload a leaf image to get a real-time diagnosis, treatment, and expert
-          advisory — powered by AI.
-        </p>
+        <div class="hero-grid align-items-center">
+          <div class="hero-copy text-center text-lg-start">
+            <div class="hero-badges justify-content-center justify-content-lg-start">
+              <span class="hero-badge"><i class="bi bi-shield-check"></i> Trusted crop guidance</span>
+              <span class="hero-badge"><i class="bi bi-lightning-charge"></i> Fast AI-powered analysis</span>
+            </div>
+            <div class="hero-kicker">AI for healthier harvests</div>
+            <h1 class="display-3 fw-bold hero-title">Instant Crop Disease Diagnosis</h1>
+            <p class="lead mt-3 mb-4 hero-subtitle">
+              Upload a leaf image to get a real-time diagnosis, treatment, and expert
+              advisory powered by a smarter, faster crop workflow.
+            </p>
 
-        <a href="analysis.html" class="btn btn-light btn-lg me-3 animated-button">
-          <i class="bi bi-camera"></i> Start Detection
-        </a>
-        <a href="advisories.html" class="btn btn-outline-light btn-lg">
-          <i class="bi bi-grid"></i> View Advisories
+            <div class="hero-cta-group">
+              <a href="analysis.html" class="btn btn-light btn-lg me-lg-3 animated-button hero-magnetic">
+                <i class="bi bi-camera"></i> Start Detection
+              </a>
+              <a href="advisories.html" class="btn btn-outline-light btn-lg hero-magnetic">
+                <i class="bi bi-grid"></i> View Advisories
+              </a>
+            </div>
+
+            <div class="hero-stats justify-content-center justify-content-lg-start">
+              <div class="hero-stat">
+                <strong data-count="24">24</strong>
+                <span>Hour support loop</span>
+              </div>
+              <div class="hero-stat">
+                <strong data-count="5">5</strong>
+                <span>MB quick uploads</span>
+              </div>
+              <div class="hero-stat">
+                <strong data-count="94">94</strong>
+                <span>Demo confidence</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="hero-visual" aria-hidden="true">
+            <div class="hero-orbit hero-orbit-one"></div>
+            <div class="hero-orbit hero-orbit-two"></div>
+            <div class="hero-dashboard-card">
+              <div class="hero-dashboard-top">
+                <span class="hero-dot"></span>
+                <span class="hero-dot"></span>
+                <span class="hero-dot"></span>
+              </div>
+              <div class="hero-dashboard-body">
+                <div class="hero-mini-chart">
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                </div>
+                <div class="hero-scan-panel">
+                  <div class="hero-leaf-frame">
+                    <div class="hero-scan-line"></div>
+                  </div>
+                  <div class="hero-panel-copy">
+                    <div class="hero-panel-title">Live scan</div>
+                    <div class="hero-panel-pill">Disease pattern matching</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="floating-info-card info-card-top">
+              <i class="bi bi-cpu-fill"></i>
+              <div>
+                <strong>AI engine active</strong>
+                <span>Pattern recognition online</span>
+              </div>
+            </div>
+            <div class="floating-info-card info-card-middle">
+              <i class="bi bi-droplet-half"></i>
+              <div>
+                <strong>Advisory ready</strong>
+                <span>Treatment suggestions in seconds</span>
+              </div>
+            </div>
+            <div class="floating-info-card info-card-bottom">
+              <i class="bi bi-graph-up-arrow"></i>
+              <div>
+                <strong>Health score</strong>
+                <span>Continuous crop monitoring flow</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <a href="#features" class="hero-scroll-cue" aria-label="Scroll to features">
+          <span>Scroll</span>
+          <i class="bi bi-arrow-down"></i>
         </a>
       </div>
     </section>
@@ -141,7 +226,7 @@
       </div>
     </div>
 
-    <section class="features-section py-5">
+    <section class="features-section py-5" id="features">
       <div class="container">
         <h2 class="text-center mb-5">Why Choose Us</h2>
         <div class="row g-4 justify-content-center">

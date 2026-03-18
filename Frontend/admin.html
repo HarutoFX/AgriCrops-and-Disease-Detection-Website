@@ -1,0 +1,326 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Admin Panel - Crop Portal</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
+
+    <link rel="stylesheet" href="style.css?v=1" />
+    <link rel="stylesheet" href="dashboard.css?v=1" />
+    <style>body{visibility:hidden;}</style>
+    <script>
+      (function () {
+        const ADMIN_EMAIL = 'admin@cropportal.com';
+        const ADMIN_SESSION_KEY = 'adminSession';
+        const currentUser = JSON.parse(localStorage.getItem('currentUser') || sessionStorage.getItem('currentUser') || 'null');
+        const adminSession = JSON.parse(localStorage.getItem(ADMIN_SESSION_KEY) || 'null');
+        const isAllowed = !!currentUser &&
+          currentUser.email === ADMIN_EMAIL &&
+          currentUser.role === 'admin' &&
+          !!adminSession &&
+          adminSession.email === ADMIN_EMAIL;
+
+        if (!isAllowed) {
+          window.location.replace(currentUser ? 'dashboard.html' : 'login.html');
+          return;
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+          document.body.style.visibility = 'visible';
+        });
+      })();
+    </script>
+  </head>
+
+  <body>
+    <nav class="navbar navbar-expand-lg bg-light shadow-sm sticky-top">
+      <div class="container-fluid">
+        <a class="navbar-brand fw-bold text-success" href="admin.html">🌿 Crop Portal Admin</a>
+        <button class="btn btn-outline-success d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarMobile">
+          <i class="bi bi-list"></i>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto align-items-center">
+            <li class="nav-item me-2">
+              <span class="navbar-text">Welcome, Admin!</span>
+            </li>
+            <li class="nav-item ms-2">
+              <button id="themeToggle" class="theme-toggle-btn" aria-label="Toggle Theme">
+                <i class="bi bi-brightness-high-fill"></i>
+              </button>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="d-flex">
+      <nav id="sidebarDesktop" class="sidebar-desktop d-none d-lg-block">
+        <div class="position-sticky pt-3">
+          <ul class="nav flex-column">
+            <li class="nav-item"><a class="nav-link" href="dashboard.html"><i class="bi bi-house-door-fill"></i> Dashboard</a></li>
+            <li class="nav-item"><a class="nav-link active" href="admin.html"><i class="bi bi-shield-lock-fill"></i> Admin Panel</a></li>
+            <li class="nav-item"><a class="nav-link" href="analysis.html"><i class="bi bi-cpu"></i> Detection Lab</a></li>
+            <li class="nav-item"><a class="nav-link" href="advisories.html"><i class="bi bi-journal-text"></i> Advisories</a></li>
+            <li class="nav-item"><a class="nav-link" href="profile.html"><i class="bi bi-person-fill"></i> Profile</a></li>
+          </ul>
+          <hr>
+          <ul class="nav flex-column">
+            <li class="nav-item"><a class="nav-link" href="index.html"><i class="bi bi-box-arrow-left"></i> Logout</a></li>
+          </ul>
+        </div>
+      </nav>
+
+      <div class="offcanvas-lg offcanvas-start d-lg-none" tabindex="-1" id="sidebarMobile">
+        <div class="offcanvas-header">
+          <h5 class="offcanvas-title">Crop Portal Admin</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#sidebarMobile"></button>
+        </div>
+        <div class="offcanvas-body">
+          <ul class="nav flex-column">
+            <li class="nav-item"><a class="nav-link" href="dashboard.html"><i class="bi bi-house-door-fill"></i> Dashboard</a></li>
+            <li class="nav-item"><a class="nav-link active" href="admin.html"><i class="bi bi-shield-lock-fill"></i> Admin Panel</a></li>
+            <li class="nav-item"><a class="nav-link" href="analysis.html"><i class="bi bi-cpu"></i> Detection Lab</a></li>
+            <li class="nav-item"><a class="nav-link" href="advisories.html"><i class="bi bi-journal-text"></i> Advisories</a></li>
+            <li class="nav-item"><a class="nav-link" href="profile.html"><i class="bi bi-person-fill"></i> Profile</a></li>
+          </ul>
+          <hr>
+          <ul class="nav flex-column">
+            <li class="nav-item"><a class="nav-link" href="index.html"><i class="bi bi-box-arrow-left"></i> Logout</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <main class="main-content flex-grow-1 p-4" id="adminRoot">
+        <div class="container-fluid">
+          <div class="page-hero dashboard-hero mb-4">
+            <div class="page-kicker">Admin Workspace</div>
+            <h1 class="h2 fw-bold mb-2">Command Center</h1>
+            <p class="mb-0">Monitor users, review system health, triage platform risks, and manage content-facing operations from one cleaner control screen.</p>
+            <div class="page-meta">
+              <span class="page-meta-pill"><i class="bi bi-people"></i> User oversight</span>
+              <span class="page-meta-pill"><i class="bi bi-activity"></i> Activity checks</span>
+              <span class="page-meta-pill"><i class="bi bi-sliders"></i> Content controls</span>
+            </div>
+          </div>
+
+          <div class="row g-4 mb-4">
+            <div class="col-md-6 col-xl-3">
+              <div class="dashboard-stat-card">
+                <div class="dashboard-stat-icon"><i class="bi bi-people"></i></div>
+                <div>
+                  <span>Total Accounts</span>
+                  <strong>18</strong>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 col-xl-3">
+              <div class="dashboard-stat-card">
+                <div class="dashboard-stat-icon"><i class="bi bi-person-check"></i></div>
+                <div>
+                  <span>Active Today</span>
+                  <strong>3</strong>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 col-xl-3">
+              <div class="dashboard-stat-card">
+                <div class="dashboard-stat-icon"><i class="bi bi-shield-check"></i></div>
+                <div>
+                  <span>Critical Alerts</span>
+                  <strong>1</strong>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 col-xl-3">
+              <div class="dashboard-stat-card">
+                <div class="dashboard-stat-icon"><i class="bi bi-lightning-charge"></i></div>
+                <div>
+                  <span>Platform Health</span>
+                  <strong>96%</strong>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="admin-grid">
+            <div class="admin-span-8">
+              <div class="admin-card">
+                <div class="content-panel-header">
+                  <div>
+                    <h3 class="section-title">Recent User Activity</h3>
+                    <p class="section-subtitle">Filter, review, and triage the most recent activity across the demo platform.</p>
+                  </div>
+                  <div class="admin-toolbar">
+                    <input type="search" class="form-control" id="adminUserSearch" placeholder="Search user or email">
+                    <select class="form-select" id="adminRoleFilter">
+                      <option value="all">All roles</option>
+                      <option value="admin">Admin</option>
+                      <option value="user">User</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="table-responsive">
+                  <table class="table admin-table align-middle mb-0">
+                    <thead class="table-light">
+                      <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Role</th>
+                        <th>Last Action</th>
+                        <th>Status</th>
+                        <th class="text-end">Action</th>
+                      </tr>
+                    </thead>
+                    <tbody id="adminUserTableBody">
+                      <tr data-role="admin" data-search="crop portal admin admin@cropportal.com">
+                        <td>Crop Portal Admin</td>
+                        <td>admin@cropportal.com</td>
+                        <td><span class="badge bg-dark">Admin</span></td>
+                        <td>Reviewed detection activity</td>
+                        <td><span class="dashboard-status healthy">Stable</span></td>
+                        <td class="text-end"><button class="btn btn-sm btn-outline-success admin-action-btn" data-action="review admin">Review</button></td>
+                      </tr>
+                      <tr data-role="user" data-search="demo farmer demo@farmer.com">
+                        <td>Demo Farmer</td>
+                        <td>demo@farmer.com</td>
+                        <td><span class="badge bg-success">User</span></td>
+                        <td>Uploaded a crop scan</td>
+                        <td><span class="dashboard-status warning">Needs follow-up</span></td>
+                        <td class="text-end"><button class="btn btn-sm btn-outline-success admin-action-btn" data-action="open farmer history">Open</button></td>
+                      </tr>
+                      <tr data-role="user" data-search="field support user support@farmmail.com">
+                        <td>Field Support User</td>
+                        <td>support@farmmail.com</td>
+                        <td><span class="badge bg-success">User</span></td>
+                        <td>Opened advisory cards</td>
+                        <td><span class="dashboard-status healthy">Stable</span></td>
+                        <td class="text-end"><button class="btn btn-sm btn-outline-success admin-action-btn" data-action="inspect advisory activity">Inspect</button></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <div class="admin-span-4">
+              <div class="admin-card h-100">
+                <h3 class="section-title">Live Ops Queue</h3>
+                <p class="section-subtitle">Priority admin tasks that need review today.</p>
+                <div class="dashboard-activity-list mt-3">
+                  <div class="dashboard-activity-item">
+                    <div class="dashboard-activity-icon risk"><i class="bi bi-exclamation-triangle"></i></div>
+                    <div>
+                      <strong>Advisory image mismatch</strong>
+                      <p class="mb-0 text-muted small">1 crop card still needs asset review.</p>
+                    </div>
+                  </div>
+                  <div class="dashboard-activity-item">
+                    <div class="dashboard-activity-icon healthy"><i class="bi bi-check-circle"></i></div>
+                    <div>
+                      <strong>Theme system stable</strong>
+                      <p class="mb-0 text-muted small">Light/dark admin UI now consistent.</p>
+                    </div>
+                  </div>
+                  <div class="dashboard-activity-item">
+                    <div class="dashboard-activity-icon warning"><i class="bi bi-cpu"></i></div>
+                    <div>
+                      <strong>Detection heuristic active</strong>
+                      <p class="mb-0 text-muted small">Ready for a future trained model swap.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="admin-span-6">
+              <div class="admin-card">
+                <div class="content-panel-header">
+                  <div>
+                    <h3 class="section-title">System Snapshot</h3>
+                    <p class="section-subtitle">Frontend admin visibility for current experience health.</p>
+                  </div>
+                </div>
+                <div class="admin-health-grid">
+                  <div class="admin-health-item">
+                    <span>Frontend readiness</span>
+                    <strong>High</strong>
+                  </div>
+                  <div class="admin-health-item">
+                    <span>User flow quality</span>
+                    <strong>Improved</strong>
+                  </div>
+                  <div class="admin-health-item">
+                    <span>Content consistency</span>
+                    <strong>Reviewing</strong>
+                  </div>
+                  <div class="admin-health-item">
+                    <span>Admin protection</span>
+                    <strong>Frontend-guarded</strong>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="admin-span-6">
+              <div class="admin-card">
+                <div class="content-panel-header">
+                  <div>
+                    <h3 class="section-title">Quick Admin Actions</h3>
+                    <p class="section-subtitle">Fast access to commonly reviewed areas.</p>
+                  </div>
+                </div>
+                <div class="dashboard-quick-grid mt-3">
+                  <a href="advisories.html" class="dashboard-quick-card magnetic-hover">
+                    <i class="bi bi-pencil-square"></i>
+                    <strong>Review Advisories</strong>
+                    <span>Inspect crop advisory cards and content.</span>
+                  </a>
+                  <a href="analysis.html" class="dashboard-quick-card magnetic-hover">
+                    <i class="bi bi-bezier2"></i>
+                    <strong>Test Detection UI</strong>
+                    <span>Validate the analysis flow from upload to result.</span>
+                  </a>
+                  <button class="dashboard-quick-card magnetic-hover admin-inline-action" data-action="refresh health">
+                    <i class="bi bi-arrow-repeat"></i>
+                    <strong>Refresh Status</strong>
+                    <span>Re-check frontend experience health.</span>
+                  </button>
+                  <button class="dashboard-quick-card magnetic-hover admin-inline-action" data-action="export report">
+                    <i class="bi bi-file-earmark-arrow-down"></i>
+                    <strong>Export Report</strong>
+                    <span>Generate a quick admin summary.</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div class="admin-span-12">
+              <div class="admin-card">
+                <div class="content-panel-header">
+                  <div>
+                    <h3 class="section-title">Admin Access</h3>
+                    <p class="section-subtitle">For this frontend-only setup, use the seeded demo admin account.</p>
+                  </div>
+                </div>
+                <div class="alert alert-light border mb-0 mt-2">
+                  <strong>Email:</strong> admin@cropportal.com
+                  <span class="mx-2">|</span>
+                  <strong>Password:</strong> admin123
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="script.js"></script>
+  </body>
+</html>

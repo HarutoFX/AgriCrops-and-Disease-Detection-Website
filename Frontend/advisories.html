@@ -33,27 +33,39 @@
       </div>
     </nav>
 
-    <section class="advisories-section py-5 text-center">
+    <section class="page-shell advisories-section">
       <div class="container">
-        <h1 class="fw-bold mb-3">Crop Advisories Database</h1>
-        <p class="lead mb-5">Search over 50+ crops for expert advice, treatment, and prevention.</p>
+        <div class="page-hero advisory-hero">
+          <div class="page-kicker">Knowledge Hub</div>
+          <h1 class="fw-bold mb-3">Crop Advisories Database</h1>
+          <p class="lead mb-0">Search expert crop guidance, treatment plans, and prevention patterns in one place.</p>
+          <div class="page-meta">
+            <span class="page-meta-pill"><i class="bi bi-journal-text"></i> 50+ crop entries</span>
+            <span class="page-meta-pill"><i class="bi bi-shield-check"></i> Preventive guidance included</span>
+            <span class="page-meta-pill"><i class="bi bi-search"></i> Fast live filtering</span>
+          </div>
+        </div>
 
-        <div class="row justify-content-center mb-5">
-          <div class="col-md-8">
+        <div class="content-panel mb-4">
+          <div class="content-panel-header">
+            <div>
+              <h2 class="section-title">Find the right advisory</h2>
+              <p class="section-subtitle">Search by crop, disease, or advisory type.</p>
+            </div>
+          </div>
+          <div class="search-shell">
             <div class="input-group input-group-lg">
-              <span class="input-group-text bg-white border-end-0"><i class="bi bi-search text-muted"></i></span>
-              <input type="text" class="form-control border-start-0" id="searchAdvisory" placeholder="Search database (e.g., 'Mango', 'Cotton', 'Fungal')">
+              <span class="input-group-text"><i class="bi bi-search text-muted"></i></span>
+              <input type="text" class="form-control" id="searchAdvisory" placeholder="Search database (e.g., 'Mango', 'Cotton', 'Fungal')">
             </div>
           </div>
         </div>
 
-        <div class="row g-4" id="advisoryGrid">
-            </div>
+        <div class="row g-4" id="advisoryGrid"></div>
         
-        <div class="mt-5">
+        <div class="mt-5 text-center">
             <p class="text-muted small" id="showingCount">Loading Database...</p>
         </div>
-
       </div>
     </section>
 
@@ -95,9 +107,6 @@
           if(item.risk === 'Moderate' || item.risk === 'Medium') badgeColor = 'bg-warning text-dark';
           if(item.risk === 'Low' || item.risk === 'Common' || item.risk === 'Seasonal') badgeColor = 'bg-success';
 
-          // Safety Feature: Fallback image if the main one breaks
-          const fallbackImage = "https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?w=600&q=80"; 
-
           const html = `
             <div class="col-md-6 col-lg-4 advisory-item">
               <div class="feature-card advisory-card h-100 d-flex flex-column p-0 overflow-hidden text-start">
@@ -106,7 +115,7 @@
                        class="w-100 h-100 object-fit-cover" 
                        alt="${item.crop}" 
                        loading="lazy"
-                       onerror="this.onerror=null; this.src='${fallbackImage}';">
+                       onerror="this.onerror=null; this.src=createAdvisoryIllustrationById('${item.id}');">
                   <div class="position-absolute top-0 end-0 p-2">
                      <span class="badge bg-dark bg-opacity-75">${item.crop}</span>
                   </div>
@@ -144,6 +153,73 @@
             renderCrops(filtered);
         });
       });
+
+      function createAdvisoryIllustrationById(id) {
+        const item = cropsDB.find((entry) => String(entry.id) === String(id));
+        return item ? createAdvisoryIllustration(item) : createAdvisoryIllustration({
+          crop: 'Crop',
+          name: 'Advisory',
+          risk: 'Medium',
+          type: 'Fungal'
+        });
+      }
+
+      function createAdvisoryIllustration(item) {
+        const palettes = {
+          Fungal: ['#163c23', '#2f9e44', '#9ee37d'],
+          Viral: ['#12364a', '#1f7aa8', '#83d7ff'],
+          Bacterial: ['#4b3410', '#cc8c1d', '#ffd88a']
+        };
+
+        const [dark, mid, light] = palettes[item.type] || ['#1d2b24', '#4f7d5c', '#dcefd6'];
+        const crop = escapeSvg(item.crop);
+        const name = escapeSvg(item.name);
+        const risk = escapeSvg(item.risk + ' Risk');
+
+        const svg = `
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500">
+            <defs>
+              <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="${dark}"/>
+                <stop offset="55%" stop-color="${mid}"/>
+                <stop offset="100%" stop-color="${light}"/>
+              </linearGradient>
+              <radialGradient id="glow" cx="20%" cy="20%" r="70%">
+                <stop offset="0%" stop-color="rgba(255,255,255,0.38)"/>
+                <stop offset="100%" stop-color="rgba(255,255,255,0)"/>
+              </radialGradient>
+            </defs>
+            <rect width="800" height="500" fill="url(#bg)"/>
+            <rect width="800" height="500" fill="rgba(4,10,6,0.18)"/>
+            <ellipse cx="170" cy="110" rx="220" ry="160" fill="rgba(255,255,255,0.12)"/>
+            <ellipse cx="650" cy="410" rx="250" ry="180" fill="rgba(255,255,255,0.08)"/>
+            <g transform="translate(120 90)">
+              <ellipse cx="120" cy="150" rx="88" ry="132" fill="rgba(255,255,255,0.18)"/>
+              <ellipse cx="120" cy="150" rx="68" ry="112" fill="${light}" fill-opacity="0.65"/>
+              <path d="M120 40 C120 120 120 210 120 290" stroke="rgba(255,255,255,0.45)" stroke-width="8" stroke-linecap="round"/>
+            </g>
+            <g transform="translate(390 76)">
+              <rect x="0" y="0" width="290" height="56" rx="28" fill="rgba(255,255,255,0.14)"/>
+              <text x="26" y="36" fill="white" font-size="26" font-family="Poppins, Arial, sans-serif">${crop}</text>
+              <text x="0" y="130" fill="white" font-size="42" font-weight="700" font-family="Poppins, Arial, sans-serif">${name}</text>
+              <text x="0" y="175" fill="rgba(255,255,255,0.84)" font-size="24" font-family="Poppins, Arial, sans-serif">${risk}</text>
+              <rect x="0" y="214" width="250" height="52" rx="26" fill="rgba(255,255,255,0.12)"/>
+              <text x="24" y="247" fill="white" font-size="22" font-family="Poppins, Arial, sans-serif">${escapeSvg(item.type)} Advisory</text>
+            </g>
+          </svg>
+        `;
+
+        return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
+      }
+
+      function escapeSvg(value) {
+        return String(value)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#39;');
+      }
     </script>
   </body>
 </html>
